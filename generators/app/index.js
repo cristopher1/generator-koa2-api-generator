@@ -85,9 +85,15 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
 
   #addJsonSchemas() {}
 
-  #addOpenApi() {}
+  #addOpenApi() {
+    const generator = this.#generatorProvider.getOpenApiGenerator()
+    this.composeWith(generator)
+  }
 
-  #addSwagger() {}
+  #addSwagger() {
+    const generator = this.#generatorProvider.getSwaggerGenerator()
+    this.composeWith(generator)
+  }
 
   #addSequelize() {
     const generator = this.#generatorProvider.getSequelizeGenerator()
@@ -101,6 +107,8 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
 
   configuring() {
     this.#addSequelize()
+    this.#addOpenApi()
+    this.#addSwagger()
     /*
     const { includeLicense, license } = this.answers
 

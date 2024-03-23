@@ -6,6 +6,8 @@ import GeneratorJest from '../../jest/index.js'
 import GeneratorLintStaged from '../../lintstaged/index.js'
 import GeneratorPrettier from '../../prettier/index.js'
 import GeneratorCommitLint from '../../commitlint/index.js'
+import GeneratorOpenApi from '../../openapi/index.js'
+import GeneratorSwagger from '../../swagger/index.js'
 import GeneratorSequelize from '../../sequelize/index.js'
 import GeneratorLicense from 'generator-license/app/index.js'
 
@@ -67,6 +69,20 @@ export class GeneratorProvider {
     return {
       Generator: GeneratorCommitLint,
       path: require.resolve('../../commitlint'),
+    }
+  }
+
+  getOpenApiGenerator() {
+    return {
+      Generator: GeneratorOpenApi,
+      path: require.resolve('../../openapi'),
+    }
+  }
+
+  getSwaggerGenerator() {
+    return {
+      Generator: GeneratorSwagger,
+      path: require.resolve('../../swagger'),
     }
   }
 

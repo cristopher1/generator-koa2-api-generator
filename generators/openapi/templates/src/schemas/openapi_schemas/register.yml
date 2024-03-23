@@ -1,0 +1,25 @@
+components:
+  schemas:
+    Register:
+      description: Register an user
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: usertest@user.com
+        password:
+          type: string
+          example: superuser1234567
+        names:
+          type: string
+          example: superadminjames
+        surnames:
+          type: string
+          example: fakeruser
+      additionalProperties: false
+      required:
+        - email
+        - password
+        - names
+        - surnames
