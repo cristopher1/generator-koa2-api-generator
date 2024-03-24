@@ -1,0 +1,24 @@
+version: '3.4'
+
+services:
+  database:
+    build:
+      context: database
+    env_file:
+      - database/.env
+    restart: always
+    volumes:
+      - maria_db_data:/var/lib/mysql
+      - maria_db_backup:/backup
+
+  api:
+    build:
+      context: api
+    env_file:
+      - api/.env
+    ports:
+      - '3000:3000'
+
+volumes:
+  maria_db_data:
+  maria_db_backup:
