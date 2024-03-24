@@ -10,8 +10,8 @@ services:
 
   api:
     build:
-      context: <%- project_name %>
+      context: api
     env_file:
-      - <%- project_name %>/.env
+      - api/.env
     ports:
       - '3000:3000'
