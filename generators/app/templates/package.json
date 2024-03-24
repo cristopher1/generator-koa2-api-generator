@@ -7,10 +7,8 @@
   "scripts": {
     "init:husky": "husky install",
     "init": "npm run init:husky",
-    "build:dev": "npx babel src --config-file ./babel.config.js --watch --out-dir dist",
-    "build": "npx babel src --config-file ./babel.config.json --out-dir dist --copy-files",
-    "start": "node -r dotenv/config src/server.js",
     "dev": "nodemon -r dotenv/config src/server.js",
+    "start": "node -r dotenv/config src/server.js",
     "lint": "eslint ./src index.js",
     "lint-fix": "eslint --fix ./src index.js",
     "lint-staged": "npx lint-staged",
