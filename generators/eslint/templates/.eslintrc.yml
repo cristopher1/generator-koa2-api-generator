@@ -16,7 +16,6 @@ overrides:
       files: ['__tests__/**/*.js'],
       extends: ['plugin:jest/recommended'],
       plugins: ['jest'],
-      rules: { jest/expect-expect: 0, no-template-curly-in-string: 0 },
     },
   ]
 
