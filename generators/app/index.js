@@ -84,7 +84,10 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
     this.composeWith(generator)
   }
 
-  #addDockerCompose() {}
+  #addDockerCompose() {
+    const generator = this.#generatorProvider.getDockerComposeGenerator()
+    this.composeWith(generator)
+  }
 
   #addJsonSchemas() {}
 
@@ -103,13 +106,6 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
     this.composeWith(generator)
   }
 
-  /*
-  #addLicense(options) {
-    const generator = this.#generatorProvider.getLicenseGenerator()
-    this.composeWith(generator, options)
-  }
-  */
-
   configuring() {
     this.#addGit()
     this.#addEslint()
@@ -123,6 +119,7 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
     this.#addOpenApi()
     this.#addSwagger()
     this.#addDocker()
+    this.#addDockerCompose()
   }
 
   writing() {

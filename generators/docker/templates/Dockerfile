@@ -1,7 +1,7 @@
 # Base image. This image is not deterministic. A deterministic image use syntax like the following:
 # node:16.13.2@sha256:2033f4cc18f9d8b5d0baa7f276aaeffd202e1a2c6fe9af408af05a34fe68cbfb
 # See: https://candrews.integralblue.com/2023/09/always-use-docker-image-digests/
-FROM node:<%- node_version %> AS base
+FROM node:<%- image_node_version %> AS base
 
 # Image used in development stage
 FROM base AS development

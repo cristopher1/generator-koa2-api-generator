@@ -10,6 +10,7 @@ import GeneratorOpenApi from '../../openapi/index.js'
 import GeneratorSwagger from '../../swagger/index.js'
 import GeneratorSequelize from '../../sequelize/index.js'
 import GeneratorDocker from '../../docker/index.js'
+import GeneratorDockerCompose from '../../docker_compose/index.js'
 
 import { createRequire } from 'node:module'
 
@@ -97,6 +98,13 @@ export class GeneratorProvider {
     return {
       Generator: GeneratorDocker,
       path: require.resolve('../../docker'),
+    }
+  }
+
+  getDockerComposeGenerator() {
+    return {
+      Generator: GeneratorDockerCompose,
+      path: require.resolve('../../docker_compose'),
     }
   }
 }
