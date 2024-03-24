@@ -100,40 +100,25 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
     this.composeWith(generator)
   }
 
+  /*
   #addLicense(options) {
     const generator = this.#generatorProvider.getLicenseGenerator()
     this.composeWith(generator, options)
   }
+  */
 
   configuring() {
-    this.#addSequelize()
-    this.#addOpenApi()
-    this.#addSwagger()
-    /*
-    const { includeLicense, license } = this.answers
-
     this.#addGit()
     this.#addEslint()
     this.#addHusky()
     this.#addLintStaged()
     this.#addPrettier()
-
     this.#addBabel()
-    this.#addJest([this.answers.generatorName])
+    this.#addJest()
     this.#addCommitLint()
-
-
-    if (includeLicense && license !== 'NO_LICENSE') {
-      const licenseOptions = {
-        name: this.answers.authorName,
-        email: this.answers.authorEmail,
-        website: this.answers.authorHomepage,
-        license: this.answers.license,
-      }
-
-      this.#addLicense(licenseOptions)
-    }
-    */
+    this.#addSequelize()
+    this.#addOpenApi()
+    this.#addSwagger()
   }
 
   writing() {
