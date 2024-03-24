@@ -79,7 +79,10 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
     this.composeWith(generator)
   }
 
-  #addDocker() {}
+  #addDocker() {
+    const generator = this.#generatorProvider.getDockerGenerator()
+    this.composeWith(generator)
+  }
 
   #addDockerCompose() {}
 
@@ -119,6 +122,7 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
     this.#addSequelize()
     this.#addOpenApi()
     this.#addSwagger()
+    this.#addDocker()
   }
 
   writing() {

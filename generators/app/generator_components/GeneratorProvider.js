@@ -9,7 +9,7 @@ import GeneratorCommitLint from '../../commitlint/index.js'
 import GeneratorOpenApi from '../../openapi/index.js'
 import GeneratorSwagger from '../../swagger/index.js'
 import GeneratorSequelize from '../../sequelize/index.js'
-import GeneratorLicense from 'generator-license/app/index.js'
+import GeneratorDocker from '../../docker/index.js'
 
 import { createRequire } from 'node:module'
 
@@ -93,10 +93,10 @@ export class GeneratorProvider {
     }
   }
 
-  getLicenseGenerator() {
+  getDockerGenerator() {
     return {
-      Generator: GeneratorLicense,
-      path: require.resolve('generator-license/app'),
+      Generator: GeneratorDocker,
+      path: require.resolve('../../docker'),
     }
   }
 }
