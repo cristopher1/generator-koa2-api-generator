@@ -9,12 +9,6 @@ export default (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.User.hasMany(models.Restaurant, {
-        foreignKey: {
-          name: 'owner_email',
-          allowNull: false,
-        },
-      })
     }
   }
   User.init(
