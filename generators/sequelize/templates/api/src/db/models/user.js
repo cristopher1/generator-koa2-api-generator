@@ -26,7 +26,8 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          isAlpha: {
+          is: {
+            args: /^[a-z]+( [a-z])*$/i,
             msg: 'The names only can contain letters',
           },
         },
@@ -35,7 +36,8 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          isAlpha: {
+          is: {
+            args: /^[a-z]+( [a-z])*$/i,
             msg: 'The surnames only can contain letters',
           },
         },
