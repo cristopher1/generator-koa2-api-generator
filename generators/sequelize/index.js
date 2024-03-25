@@ -4,6 +4,10 @@ export default class GeneratorSequelize extends Generator {
   writing() {
     this.fs.copy(this.templatePath('api/src'), this.destinationPath('api/src'))
     this.fs.copy(
+      this.templatePath('api/src/db/seeders/.keep'),
+      this.destinationPath('api/src/db/seeders/.keep'),
+    )
+    this.fs.copy(
       this.templatePath('api/.sequelizerc'),
       this.destinationPath('api/.sequelizerc'),
     )
