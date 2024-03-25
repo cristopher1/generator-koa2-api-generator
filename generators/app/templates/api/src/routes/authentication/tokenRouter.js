@@ -16,6 +16,7 @@ const getUserInfo = async (email, password, orm) => {
   return userInfo
 }
 
+/** @type {import('koa').Middleware} */
 const obtainToken = async (ctx) => {
   const { email, password } = ctx.request.body
   const userInfo = await getUserInfo(email, password, ctx.orm)
