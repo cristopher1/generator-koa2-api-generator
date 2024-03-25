@@ -6,12 +6,7 @@ import config from '../../config/database.js'
 
 /** @typedef {import('sequelize').DataTypes} DataTypes */
 /** @typedef {import('sequelize').Sequelize} Sequelize */
-/**
- * @typedef {object} Orm
- * @property {object} db - Object that contains Sequelize class and sequelize
- *   connection to database.
- * @property {object} models - Object that contains the sequelize models.
- */
+/** @typedef {import('../../types/types.d.ts').Orm} Orm */
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -55,8 +50,11 @@ const getModelFileNames = (dirname, basename) => {
  * @param {Sequelize} sequelize The sequelize object used to connect to the
  *   database
  * @param {DataTypes} sequelizeDataTypes The data types used by sequelize models
+ * @returns {Promise<Orm>} Returns the orm object that contains database
+ *   connection and orm models
  */
 const loadOrm = async (dirname, basename, sequelize, sequelizeDataTypes) => {
+  /** @type {Orm} */
   const orm = {}
 
   orm.db = {}
