@@ -13,6 +13,8 @@ overrides:
     },
     {
       files: ['generators/**/src/**/*.js'],
+      excludedFiles:
+        ['generators/sequelize/templates/api/src/db/models/user.js'],
       extends: ['plugin:jsdoc/recommended'],
       plugins: ['jsdoc'],
       rules: { 'jsdoc/tag-lines': 0 },
