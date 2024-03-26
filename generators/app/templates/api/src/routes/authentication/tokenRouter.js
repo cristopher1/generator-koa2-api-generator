@@ -2,9 +2,9 @@ import Router from 'koa-router'
 import jwt from 'jsonwebtoken'
 import config from '../../config/jwt.js'
 
-const { JWTSecret, JWTAlgorithm } = config
-
 /** @typedef {import('../../types/types.d.ts').Orm} Orm */
+
+const { JWTSecret, JWTAlgorithm } = config
 
 /**
  * Get user information from database
