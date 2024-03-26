@@ -50,8 +50,9 @@ const getModelFileNames = (dirname, basename) => {
  * @param {Sequelize} sequelize The sequelize object used to connect to the
  *   database
  * @param {DataTypes} sequelizeDataTypes The data types used by sequelize models
- * @returns {Promise<Orm>} Returns the orm object that contains database
- *   connection and orm models
+ * @returns {Promise<Orm>} Returns a promise, when the promise is fulfilled, the
+ *   promise returns the orm object that contains database connection and orm
+ *   models
  */
 const loadOrm = async (dirname, basename, sequelize, sequelizeDataTypes) => {
   /** @type {Orm} */
