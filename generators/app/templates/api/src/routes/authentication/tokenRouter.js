@@ -12,7 +12,8 @@ const { JWTSecret, JWTAlgorithm } = config
  * @param {string} email User email
  * @param {string} password User password
  * @param {Orm} orm Orm object
- * @returns {Object} User information
+ * @returns {Promise<any>} Returns a promise, when the promise is fulfilled, the
+ *   promise returns the user information.
  */
 const getUserInfo = async (email, password, orm) => {
   const user = await orm.models.User.findOne({
