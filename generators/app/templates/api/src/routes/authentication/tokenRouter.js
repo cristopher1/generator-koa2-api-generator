@@ -5,7 +5,7 @@ import config from '../../config/jwt.js'
 const { JWTSecret, JWTAlgorithm } = config
 
 const getUserInfo = async (email, password, orm) => {
-  const user = await orm.User.findOne({
+  const user = await orm.models.User.findOne({
     attributes: ['email', 'names', 'surnames'],
     where: {
       email,

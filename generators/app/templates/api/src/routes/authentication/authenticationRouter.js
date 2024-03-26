@@ -15,6 +15,7 @@ const isAuthenticated = async (ctx, next) => {
   const userInfo = jwt.verify(token, JWTSecret, {
     algorithm: JWTAlgorithm,
   })
+
   if (userInfo) {
     ctx.state.userInfo = userInfo
     await next()
