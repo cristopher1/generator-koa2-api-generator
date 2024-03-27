@@ -9,10 +9,12 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 
 describe('generator-koa2-api-generator:app', () => {
   describe('create a project', () => {
+    const projectName = 0
+    const args = []
     const answers = {}
 
     beforeAll(async () => {
-      answers.projectName = faker.string.sample()
+      args[projectName] = faker.string.sample()
 
       /**
        * Add options to withAnswers, for example: Use a callback function to
@@ -34,20 +36,13 @@ describe('generator-koa2-api-generator:app', () => {
 
       await helpers
         .run(path.join(__dirname, '../generators/app'))
+        .withArguments(args)
         .withAnswers(answers, options)
     })
 
-    it('Should create a index.js file', () => {
+    it('Should create a server.js file', () => {
       // Assert
-      assert.file('src/index.js')
-    })
-
-    it('Should add the correct content into index.js file', () => {
-      // Assert
-      assert.fileContent([
-        ['src/index.js', 'const getGreeting = (string) => `hello ${string}`'],
-        ['src/index.js', 'export { getGreeting }'],
-      ])
+      assert.file('api/src/server.js')
     })
   })
 })
