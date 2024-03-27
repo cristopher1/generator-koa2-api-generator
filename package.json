@@ -1,7 +1,7 @@
 {
   "name": "generator-koa2-api-generator",
   "version": "0.1.0",
-  "description": "Yeoman generator to create a base structure fo APIs based in koa2 framework, using tools such as: eslint, prettier, swagger and others",
+  "description": "Yeoman generator to create a base structure for APIs based in koa2 framework, using tools such as: eslint, prettier, swagger and others",
   "homepage": "https://github.com/cristopher1/generator-koa2-api-generator",
   "type": "module",
   "main": "./dist/generators/app/index.js",

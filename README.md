@@ -12,7 +12,7 @@
   </a>
 </p>
 
-> Yeoman generator to create a base structure fo APIs based in koa2 framework, using tools such as: eslint, prettier, swagger and others
+> Yeoman generator to create a base structure for APIs based in koa2 framework, using tools such as: eslint, prettier, swagger and others
 
 ### 🏠 [Homepage](https://github.com/cristopher1/generator-koa2-api-generator)
 
