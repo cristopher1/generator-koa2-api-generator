@@ -5,7 +5,7 @@ import { registerRouter } from './user/registerRouter.js'
 import { userRouter } from './user/router.js'
 import { swaggerRouter } from './swagger/router.js'
 
-const environment = process.env.NODE_ENV || 'development'
+const environment = process.env.NODE_ENV
 
 const router = new Router({
   prefix: '/api/v1',
