@@ -57,6 +57,7 @@ export default class GeneratorDockerCompose extends Generator {
             value: 'mariadb',
           },
         ],
+        default: 'postgresql',
       },
     ]
 
