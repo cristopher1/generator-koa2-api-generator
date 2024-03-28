@@ -13,13 +13,11 @@ export default class GeneratorDocker extends Generator {
         'Add docker support using DockerFile, .dockerignore and others',
       required: false,
     })
-
     this.argument('nodeVersion', {
       type: Number,
       description: 'Node version used in DockerFile. (FROM nodeVersion)',
       required: false,
     })
-
     this.argument('projectFolderName', {
       type: String,
       description:
@@ -109,12 +107,14 @@ export default class GeneratorDocker extends Generator {
           projectFolderName,
         },
       )
-
       this.fs.copy(
         this.templatePath('api/docker-entrypoint.sh'),
         this.destinationPath('api/docker-entrypoint.sh'),
       )
-
+      this.fs.copy(
+        this.templatePath('api/wait-for-it.sh'),
+        this.destinationPath('api/wait-for-it.sh'),
+      )
       this.fs.copy(
         this.templatePath('api/.dockerignore'),
         this.destinationPath('api/.dockerignore'),

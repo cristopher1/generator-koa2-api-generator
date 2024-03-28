@@ -22,9 +22,5 @@ export default class GeneratorDockerCompose extends Generator {
       this.templatePath(`databases/${databaseName}/docker-compose.yml`),
       this.destinationPath('docker-compose.yml'),
     )
-    this.fs.copy(
-      this.templatePath('api/wait-for-it.sh'),
-      this.destinationPath('api/wait-for-it.sh'),
-    )
   }
 }
