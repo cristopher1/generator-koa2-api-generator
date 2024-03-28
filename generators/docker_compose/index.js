@@ -6,8 +6,16 @@ export default class GeneratorDockerCompose extends Generator {
   constructor(args, opts) {
     super(args, opts)
 
-    this.argument('useDockerCompose', { type: Boolean, required: false })
-    this.argument('databaseName', { type: String, required: false })
+    this.argument('useDockerCompose', {
+      type: Boolean,
+      description: 'Add Docker Compose support.',
+      required: false,
+    })
+    this.argument('databaseName', {
+      type: String,
+      description: 'Select the database to which the application will connect.',
+      required: false,
+    })
   }
 
   async prompting() {
@@ -31,7 +39,7 @@ export default class GeneratorDockerCompose extends Generator {
       {
         type: 'list',
         name: 'databaseName',
-        message: 'Select a database to connect',
+        message: 'Select the database to which the application will connect.',
         when: (answers) =>
           (this.options.useDockerCompose || answers.useDockerCompose) &&
           !this.options.databaseName,
