@@ -129,6 +129,10 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
       this.destinationPath('api/.env.example'),
     )
     this.fs.copy(
+      this.templatePath('api/.env'),
+      this.destinationPath('api/.env'),
+    )
+    this.fs.copy(
       this.templatePath('api/package.json'),
       this.destinationPath('api/package.json'),
     )
