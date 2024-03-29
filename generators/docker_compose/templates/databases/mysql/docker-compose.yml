@@ -13,7 +13,7 @@ services:
   api:
     build:
       context: api
-    target: development
+      target: development
     env_file:
       - api/.env
     ports:
