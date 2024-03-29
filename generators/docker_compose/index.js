@@ -87,6 +87,62 @@ export default class GeneratorDockerCompose extends Generator {
         this.templatePath(`databases/${databaseName}/docker-compose.yml`),
         this.destinationPath('docker-compose.yml'),
       )
+
+      let dbPort
+      let dbDialect
+
+      switch (databaseName) {
+        case 'mysql':
+          dbPort = 3306
+          dbDialect = 'mysql'
+          break
+        case 'mariadb':
+          dbPort = 3306
+          dbDialect = 'mariadb'
+          break
+        default:
+          dbPort = 5432
+          dbDialect = 'postgres'
+          break
+      }
+
+      const databaseEnvVariables = [
+        {
+          name: 'DB_USERNAME',
+          value: 'admin',
+        },
+        {
+          name: 'DB_PASSWORD',
+          value: 'admin',
+        },
+        {
+          name: 'DB_NAME',
+          value: 'api',
+        },
+        {
+          name: 'DB_HOST',
+          value: 'database',
+        },
+        {
+          name: 'DB_PORT',
+          value: `${dbPort}`,
+        },
+        {
+          name: 'DB_DIALECT',
+          value: `${dbDialect}`,
+        },
+      ]
+
+      let envFile = this.fs.read(this.destinationPath('api/.env'))
+
+      for (const databaseEnvVariable of databaseEnvVariables) {
+        const name = databaseEnvVariable.name
+        const value = databaseEnvVariable.value
+
+        envFile = envFile.replace(`${name}=`, `${name}=${value}`)
+      }
+
+      this.fs.write(this.destinationPath('api/.env'), envFile)
     }
   }
 }
