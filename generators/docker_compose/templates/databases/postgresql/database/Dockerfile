@@ -1,1 +1,1 @@
-FROM posgrest
+FROM postgres
