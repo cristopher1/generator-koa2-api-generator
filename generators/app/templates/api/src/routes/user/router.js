@@ -16,9 +16,13 @@ router.get('/:userEmail', async (ctx) => {
     return
   }
 
+  const { email, names, surnames } = user
+
   ctx.status = 200
   ctx.body = {
-    user,
+    email,
+    names,
+    surnames,
   }
 })
 
