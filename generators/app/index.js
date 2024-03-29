@@ -91,9 +91,9 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
 
   #addJsonSchemas() {}
 
-  #addOpenApi() {
+  #addOpenApi(args) {
     const generator = this.#generatorProvider.getOpenApiGenerator()
-    this.composeWith(generator)
+    this.composeWith(generator, args)
   }
 
   #addSwagger() {
@@ -116,7 +116,7 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
     this.#addJest()
     this.#addCommitLint()
     this.#addSequelize()
-    this.#addOpenApi()
+    this.#addOpenApi(['new project'])
     this.#addSwagger()
     this.#addDocker()
     this.#addDockerCompose()

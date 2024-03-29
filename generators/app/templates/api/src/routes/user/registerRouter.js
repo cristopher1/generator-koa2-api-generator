@@ -5,6 +5,7 @@ const router = new Router()
 /**
  * POST /api/v1/users/register
  *
+ * @tag API endpoints
  * @summary Register an user
  * @bodyContent {Register} application/json
  * @bodyRequired
@@ -12,7 +13,8 @@ const router = new Router()
  * @responseContent {string} 201.application/json
  * @response 400 - Bad request
  * @response 401 - The client is not authorized
- * @responseContent {Unauthorized} 401.application/json
+ * @responseContent {string} 401.text/plain
+ * @responseExample {hola} 401.text/plain.hola
  * @response 500 - Unexpected error
  */
 router.post('/', async (ctx) => {

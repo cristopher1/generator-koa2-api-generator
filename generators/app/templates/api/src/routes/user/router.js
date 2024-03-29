@@ -5,6 +5,7 @@ const router = new Router()
 /**
  * GET /api/v1/users/{userEmail}
  *
+ * @tag API endpoints
  * @security BearerTokenAuth
  * @summary Get an user by email
  * @pathParam {string} userEmail
@@ -41,6 +42,7 @@ router.get('/:userEmail', async (ctx) => {
 /**
  * PUT /api/v1/users/
  *
+ * @tag API endpoints
  * @security BearerTokenAuth
  * @summary Update user data
  * @bodyContent {UpdateUser} application/json

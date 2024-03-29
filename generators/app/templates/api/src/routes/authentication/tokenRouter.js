@@ -43,6 +43,7 @@ const router = new Router()
 /**
  * POST /api/v1/tokens/
  *
+ * @tag API endpoints
  * @summary Create a JSON Web Token
  * @bodyContent {CreateJSONWebToken} application/json
  * @bodyRequired
