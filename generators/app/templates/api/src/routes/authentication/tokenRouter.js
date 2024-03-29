@@ -40,6 +40,17 @@ const obtainToken = async (ctx) => {
 
 const router = new Router()
 
+/**
+ * POST /api/v1/tokens/
+ *
+ * @summary Create a JSON Web Token
+ * @bodyContent {CreateJSONWebToken} application/json
+ * @bodyRequired
+ * @response 200 - Ok
+ * @responseContent {Token} 200.application/json
+ * @response 400 - Bad request
+ * @response 500 - Unexpected error
+ */
 router.post('/', obtainToken)
 
 export { router as tokenRouter }

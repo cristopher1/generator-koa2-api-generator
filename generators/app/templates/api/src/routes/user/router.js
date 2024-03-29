@@ -2,6 +2,18 @@ import Router from 'koa-router'
 
 const router = new Router()
 
+/**
+ * GET /api/v1/users/{userEmail}
+ *
+ * @security BearerTokenAuth
+ * @summary Get an user by email
+ * @pathParam {string} userEmail
+ * @response 200 - Ok
+ * @responseContent {User} 200.application/json
+ * @response 400 - Bad request
+ * @response 401 - The client is not authorized
+ * @response 500 - Unexpected error
+ */
 router.get('/:userEmail', async (ctx) => {
   const { userEmail } = ctx.params
 
@@ -26,6 +38,18 @@ router.get('/:userEmail', async (ctx) => {
   }
 })
 
+/**
+ * PUT /api/v1/users/
+ *
+ * @security BearerTokenAuth
+ * @summary Update user data
+ * @bodyContent {UpdateUser} application/json
+ * @bodyRequired
+ * @response 200 - Ok
+ * @response 400 - Bad request
+ * @response 401 - The client is not authorized
+ * @response 500 - Unexpected error
+ */
 router.put('/', async (ctx) => {
   const { email } = ctx.state.userInfo
   const newUserInfo = { ...ctx.request.body }

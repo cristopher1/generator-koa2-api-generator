@@ -1,0 +1,10 @@
+components:
+  schemas:
+    Token:
+      description: Token create by jsonwebtoken
+      type: object
+      properties:
+        token:
+          type: string
+          example: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJ0ZXN0QHVzZXIuY29tIiwibmFtZXMiOiJzdXBlcmFkbWluamFtZXMiLCJzdXJuYW1lcyI6ImZha2VydXNlciIsImlhdCI6MTcxMTY4MDI4NX0.oSYInQkvbOKUU3WQeC2kYOJ6uqvYkDQEzTVDUWrz4QBmn1w4KLt88JkI0drIfbjtRTreZMk-kWTb3pdgVTu1FQ
+      additionalProperties: false

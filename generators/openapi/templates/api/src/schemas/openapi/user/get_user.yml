@@ -1,0 +1,16 @@
+components:
+  schemas:
+    User:
+      description: User returned by api/v1/users/{userEmail}
+      type: object
+      properties:
+        email:
+          type: string
+          example: user@gmail.com
+        names:
+          type: string
+          example: user user
+        surnames:
+          type: string
+          example: admin admin
+      additionalProperties: false
