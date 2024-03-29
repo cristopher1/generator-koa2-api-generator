@@ -4,6 +4,7 @@ import yosay from 'yosay'
 import { GeneratorProvider } from './generator_components/GeneratorProvider.js'
 
 export default class GeneratorKoa2ApiGenerator extends Generator {
+  #answers
   #generatorProvider
 
   constructor(args, opts) {
@@ -13,14 +14,6 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
       type: String,
       description: 'Name of the generator',
       required: true,
-    })
-
-    this.option('onlyTerminal', {
-      type: Boolean,
-      description:
-        'If this option is used, the yeoman prompts will not be used when there are missing options. For default this option is not used',
-      default: false,
-      required: false,
     })
   }
 
@@ -37,6 +30,10 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
         )} generator!`,
       ),
     )
+
+    this.#answers = {
+      projectName: this.options.projectName,
+    }
   }
 
   #addGit() {
@@ -107,6 +104,8 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
   }
 
   configuring() {
+    const { projectName } = this.#answers
+
     this.#addGit()
     this.#addEslint()
     this.#addHusky()
@@ -116,7 +115,7 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
     this.#addJest()
     this.#addCommitLint()
     this.#addSequelize()
-    this.#addOpenApi(['new project'])
+    this.#addOpenApi([projectName])
     this.#addSwagger()
     this.#addDocker()
     this.#addDockerCompose()

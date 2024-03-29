@@ -1,9 +1,9 @@
 openapi: 3.1.0
 info:
   version: 0.1.0
-  title: <%- projectName %> API documentation
+  title: <%- projectName %> - API documentation
   description: |
-    Default documentation created by generator-koa2-api-generator.
+    Default API documentation created by generator-koa2-api-generator for <%- projectName %> project.
   contact:
     name: Contact example name
     url: http://www.example.com
