@@ -87,7 +87,7 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
   }
 
   #addJsonSchemas() {
-    const generator = this.#generatorProvider.getJsonSchemas()
+    const generator = this.#generatorProvider.getJsonSchemasGenerator()
     this.composeWith(generator)
   }
 
