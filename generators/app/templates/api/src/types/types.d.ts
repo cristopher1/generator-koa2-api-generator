@@ -1,4 +1,5 @@
 import { BaseContext } from 'koa'
+import Ajv from 'ajv'
 import { Sequelize, Model, ModelStatic } from 'sequelize'
 
 class DatabaseConnection {
@@ -17,6 +18,17 @@ class ModelStorage {
 export class Orm {
   db: DatabaseConnection
   models: ModelStorage
+}
+
+class SchemaStorage {
+  createToken: Object
+  newUser: Object
+  updatedUser: Object
+}
+
+export class JsonSchema {
+  validator: Ajv
+  schemas: SchemaStorage
 }
 
 // Add property orm into koa context object. Now you can use intelliSense with ctx.orm in koa middleware
