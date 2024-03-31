@@ -1,6 +1,7 @@
 import Router from 'koa-router'
 import jwt from 'jsonwebtoken'
 import config from '../../config/jwt.js'
+import { simpleJsonSchemaValidation } from '../../schemas/json/index.js'
 
 /** @typedef {import('../../types/types.d.ts').Orm} Orm */
 
@@ -55,6 +56,16 @@ const router = new Router()
  * @response 500 - Internal Server Error
  * @responseComponent {InternalServerError} 500
  */
-router.post('/', obtainToken)
+router.post(
+  '/',
+  async (ctx, next) => {
+    const { body } = ctx.request
+
+    simpleJsonSchemaValidation('token', body)
+
+    await next()
+  },
+  obtainToken,
+)
 
 export { router as tokenRouter }

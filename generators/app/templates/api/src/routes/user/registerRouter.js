@@ -1,4 +1,5 @@
 import Router from 'koa-router'
+import { simpleJsonSchemaValidation } from '../../schemas/json/index.js'
 
 const router = new Router()
 
@@ -16,12 +17,24 @@ const router = new Router()
  * @response 500 - Internal Server Error
  * @responseComponent {InternalServerError} 500
  */
-router.post('/', async (ctx) => {
-  const user = { ...ctx.request.body }
+router.post(
+  '/',
+  // Validate the request using JSON Schema
+  async (ctx, next) => {
+    const { body } = ctx.request
 
-  await ctx.orm.models.User.create(user)
+    simpleJsonSchemaValidation('newUser', body)
 
-  ctx.status = 201
-})
+    ctx.state.user = { ...body }
+    await next()
+  },
+  async (ctx) => {
+    const { user } = ctx.state
+
+    await ctx.orm.models.User.create(user)
+
+    ctx.status = 201
+  },
+)
 
 export { router as registerRouter }

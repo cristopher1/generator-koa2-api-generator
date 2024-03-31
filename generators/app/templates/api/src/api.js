@@ -5,7 +5,7 @@ import bearerToken from 'koa-bearer-token'
 import logger from 'koa-logger'
 import loadOrmPromise from './db/models/index.js'
 import { apiRouter } from './routes/index.js'
-import { ValidationError } from 'sequelize'
+import { RequestValidationError } from './schemas/json/index.js'
 
 // Api constructor
 const api = new Koa()
@@ -17,10 +17,10 @@ api.use(async (ctx, next) => {
   try {
     await next()
   } catch (err) {
-    if (err instanceof ValidationError) {
+    if (err instanceof RequestValidationError) {
       ctx.status = 400
       ctx.body = {
-        error: err,
+        errors: err.errors,
       }
       return
     }

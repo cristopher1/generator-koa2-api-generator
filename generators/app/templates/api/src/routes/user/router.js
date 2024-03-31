@@ -1,4 +1,5 @@
 import Router from 'koa-router'
+import { simpleJsonSchemaValidation } from '../../schemas/json/index.js'
 
 const router = new Router()
 
@@ -60,24 +61,35 @@ router.get('/:userEmail', async (ctx) => {
  * @response 500 - Internal Server Error
  * @responseComponent {InternalServerError} 500
  */
-router.put('/', async (ctx) => {
-  const { email } = ctx.state.userInfo
-  const newUserInfo = { ...ctx.request.body }
+router.put(
+  '/',
+  async (ctx, next) => {
+    const { body } = ctx.request
 
-  const user = await ctx.orm.models.User.findOne({
-    where: {
-      email,
-    },
-  })
+    simpleJsonSchemaValidation('updatedUser', body)
 
-  if (!user) {
-    ctx.status = 404
-    return
-  }
+    ctx.state.updatedUser = { ...body }
+    await next()
+  },
+  async (ctx) => {
+    const { email } = ctx.state.userInfo
+    const { updatedUser } = ctx.state
 
-  await user.update(newUserInfo)
+    const user = await ctx.orm.models.User.findOne({
+      where: {
+        email,
+      },
+    })
 
-  ctx.status = 201
-})
+    if (!user) {
+      ctx.status = 404
+      return
+    }
+
+    await user.update(updatedUser)
+
+    ctx.status = 201
+  },
+)
 
 export { router as userRouter }
