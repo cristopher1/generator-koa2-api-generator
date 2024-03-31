@@ -12,7 +12,6 @@ const router = new Router()
  * @pathParam {string} userEmail
  * @response 200 - Ok
  * @responseContent {User} 200.application/json
- * @response 400 - Bad request
  * @response 401 - Unauthorized
  * @responseComponent {Unauthorized} 401
  * @response 404 - Not found
