@@ -61,7 +61,7 @@ router.post(
   async (ctx, next) => {
     const { body } = ctx.request
 
-    simpleJsonSchemaValidation('token', body)
+    simpleJsonSchemaValidation('createToken', body)
 
     await next()
   },
