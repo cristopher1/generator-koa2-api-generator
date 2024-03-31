@@ -7,15 +7,14 @@ const router = new Router()
  *
  * @tag API endpoints
  * @summary Register an user
- * @bodyContent {Register} application/json
+ * @bodyContent {NewUser} application/json
  * @bodyRequired
  * @response 201 - Created
- * @responseContent {string} 201.application/json
+ * @responseComponent {Created} 201
  * @response 400 - Bad request
- * @response 401 - The client is not authorized
- * @responseContent {string} 401.text/plain
- * @responseExample {hola} 401.text/plain.hola
- * @response 500 - Unexpected error
+ * @responseExample {NewUserBadRequestDetectedByJsonSchema} 400.application/json.NewUserBadRequestDetectedByJsonSchema
+ * @response 500 - Internal Server Error
+ * @responseComponent {InternalServerError} 500
  */
 router.post('/', async (ctx) => {
   const user = { ...ctx.request.body }

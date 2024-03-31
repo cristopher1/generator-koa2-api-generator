@@ -49,8 +49,11 @@ const router = new Router()
  * @bodyRequired
  * @response 200 - Ok
  * @responseContent {Token} 200.application/json
+ * @responseExample {UsernameTokenExample} 200.application/json.UsernameTokenExample
  * @response 400 - Bad request
- * @response 500 - Unexpected error
+ * @responseExample {CreateTokenBadRequestDetectedByJsonSchema} 400.application/json.CreateTokenBadRequestDetectedByJsonSchema
+ * @response 500 - Internal Server Error
+ * @responseComponent {InternalServerError} 500
  */
 router.post('/', obtainToken)
 

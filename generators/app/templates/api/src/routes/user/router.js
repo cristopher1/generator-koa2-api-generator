@@ -6,14 +6,18 @@ const router = new Router()
  * GET /api/v1/users/{userEmail}
  *
  * @tag API endpoints
- * @security BearerTokenAuth
+ * @security BearerAuth
  * @summary Get an user by email
  * @pathParam {string} userEmail
  * @response 200 - Ok
  * @responseContent {User} 200.application/json
  * @response 400 - Bad request
- * @response 401 - The client is not authorized
- * @response 500 - Unexpected error
+ * @response 401 - Unauthorized
+ * @responseComponent {Unauthorized} 401
+ * @response 404 - Not found
+ * @responseComponent {NotFound} 404
+ * @response 500 - Internal Server Error
+ * @responseComponent {InternalServerError} 500
  */
 router.get('/:userEmail', async (ctx) => {
   const { userEmail } = ctx.params
@@ -43,14 +47,18 @@ router.get('/:userEmail', async (ctx) => {
  * PUT /api/v1/users/
  *
  * @tag API endpoints
- * @security BearerTokenAuth
+ * @security BearerAuth
  * @summary Update user data
- * @bodyContent {UpdateUser} application/json
+ * @bodyContent {UpdatedUser} application/json
  * @bodyRequired
  * @response 200 - Ok
+ * @responseComponent {Ok} 200
  * @response 400 - Bad request
- * @response 401 - The client is not authorized
- * @response 500 - Unexpected error
+ * @responseExample {UpdatedUserBadRequestDetectedByJsonSchema} 400.application/json.UpdatedUserBadRequestDetectedByJsonSchema
+ * @response 401 - Unauthorized
+ * @responseComponent {Unauthorized} 401
+ * @response 500 - Internal Server Error
+ * @responseComponent {InternalServerError} 500
  */
 router.put('/', async (ctx) => {
   const { email } = ctx.state.userInfo
