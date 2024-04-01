@@ -83,4 +83,10 @@ const loadOrm = async (dirname, basename, sequelize, sequelizeDataTypes) => {
   return orm
 }
 
-export default await loadOrm(dirname, basename, sequelize, Sequelize.DataTypes)
+/** @type {Orm} */
+export const orm = await loadOrm(
+  dirname,
+  basename,
+  sequelize,
+  Sequelize.DataTypes,
+)

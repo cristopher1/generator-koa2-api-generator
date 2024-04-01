@@ -3,14 +3,14 @@ import koaBody from 'koa-body'
 import override from 'koa-override-method'
 import bearerToken from 'koa-bearer-token'
 import logger from 'koa-logger'
-import loadOrmPromise from './db/models/index.js'
+import { orm } from './db/models/index.js'
 import { apiRouter } from './routes/index.js'
 import { RequestValidationError } from './schemas/json/index.js'
 
 // Api constructor
 const api = new Koa()
 
-api.context.orm = await loadOrmPromise
+api.context.orm = orm
 
 // error handler
 api.use(async (ctx, next) => {

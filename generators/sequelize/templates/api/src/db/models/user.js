@@ -27,7 +27,7 @@ export default (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           is: {
-            args: /^[a-z]+( [a-z])*$/i,
+            args: /^[a-z]+( [a-z]+)*$/i,
             msg: 'The names only can contain letters',
           },
         },
@@ -37,7 +37,7 @@ export default (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           is: {
-            args: /^[a-z]+( [a-z])*$/i,
+            args: /^[a-z]+( [a-z]+)*$/i,
             msg: 'The surnames only can contain letters',
           },
         },
