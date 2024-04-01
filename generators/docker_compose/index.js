@@ -56,6 +56,10 @@ export default class GeneratorDockerCompose extends Generator {
             name: 'MariaDB',
             value: 'mariadb',
           },
+          {
+            name: 'Do not select any',
+            value: null,
+          },
         ],
         default: 'postgresql',
       },
@@ -65,16 +69,15 @@ export default class GeneratorDockerCompose extends Generator {
 
     this.#answers = {
       useDockerCompose:
-        this.options.useDockerCompose || answers.useDockerCompose || false,
-      databaseName:
-        this.options.databaseName || answers.databaseName || 'postgresql',
+        this.options.useDockerCompose || answers.useDockerCompose,
+      databaseName: this.options.databaseName || answers.databaseName,
     }
   }
 
   writing() {
     const { useDockerCompose, databaseName } = this.#answers
 
-    if (useDockerCompose) {
+    if (useDockerCompose && databaseName) {
       this.fs.copy(
         this.templatePath(`databases/${databaseName}/database`),
         this.destinationPath('database'),

@@ -2,7 +2,6 @@ import GeneratorBabel from '../../babel/index.js'
 import GeneratorEslint from '../../eslint/index.js'
 import GeneratorGit from '../../git/index.js'
 import GeneratorHusky from '../../husky/index.js'
-import GeneratorJest from '../../jest/index.js'
 import GeneratorLintStaged from '../../lintstaged/index.js'
 import GeneratorPrettier from '../../prettier/index.js'
 import GeneratorCommitLint from '../../commitlint/index.js'
@@ -57,13 +56,6 @@ export class GeneratorProvider {
     return {
       Generator: GeneratorBabel,
       path: require.resolve('../../babel'),
-    }
-  }
-
-  getJestGenerator() {
-    return {
-      Generator: GeneratorJest,
-      path: require.resolve('../../jest'),
     }
   }
 

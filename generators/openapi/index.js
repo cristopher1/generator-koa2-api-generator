@@ -14,10 +14,12 @@ export default class GeneratorOpenApi extends Generator {
   writing() {
     const { projectName } = this.options
 
-    this.fs.copy(this.templatePath('api/src'), this.destinationPath('api/src'))
+    this.env.cwd = this.destinationPath('api')
+
+    this.fs.copy(this.templatePath('api/src'), this.destinationPath('src'))
     this.fs.copyTpl(
       this.templatePath('api/api-specification.yml'),
-      this.destinationPath('api/api-specification.yml'),
+      this.destinationPath('api-specification.yml'),
       {
         projectName,
       },

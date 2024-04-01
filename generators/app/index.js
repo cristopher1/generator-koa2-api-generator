@@ -12,8 +12,14 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
 
     this.argument('projectName', {
       type: String,
-      description: 'Name of the generator',
+      description: 'Name of the project',
       required: true,
+    })
+
+    this.argument('databaseName', {
+      type: String,
+      description: 'Select a database driver.',
+      required: false,
     })
   }
 
@@ -31,8 +37,39 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
       ),
     )
 
+    const prompts = [
+      {
+        type: 'list',
+        name: 'databaseName',
+        message: 'Select a database driver',
+        when: () => !this.options.databaseName,
+        default: 'postgresql',
+        choices: [
+          {
+            name: 'MySQL',
+            value: 'mysql',
+          },
+          {
+            name: 'PostgreSQL',
+            value: 'postgresql',
+          },
+          {
+            name: 'MariaDB',
+            value: 'mariadb',
+          },
+          {
+            name: 'Do not select any',
+            value: null,
+          },
+        ],
+      },
+    ]
+
+    const answers = await this.prompt(prompts)
+
     this.#answers = {
       projectName: this.options.projectName,
+      databaseName: this.options.databaseName || answers.databaseName,
     }
   }
 
@@ -64,11 +101,6 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
   #addBabel() {
     const generator = this.#generatorProvider.getBabelGenerator()
     this.composeWith(generator)
-  }
-
-  #addJest(args) {
-    const generator = this.#generatorProvider.getJestGenerator()
-    this.composeWith(generator, args)
   }
 
   #addCommitLint() {
@@ -115,7 +147,6 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
     this.#addLintStaged()
     this.#addPrettier()
     this.#addBabel()
-    this.#addJest()
     this.#addCommitLint()
     this.#addSequelize()
     this.#addOpenApi([projectName])
@@ -126,19 +157,42 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
   }
 
   writing() {
-    this.fs.copy(this.templatePath('api/src'), this.destinationPath('api/src'))
+    const { projectName, databaseName } = this.#answers
+
+    this.env.cwd = this.destinationPath('api')
+
+    this.destinationRoot(this.env.cwd)
+
+    this.fs.copy(this.templatePath('api/src'), this.destinationPath('src'))
     this.fs.copy(
       this.templatePath('api/.env.example'),
-      this.destinationPath('api/.env.example'),
+      this.destinationPath('.env.example'),
     )
-    this.fs.copy(
-      this.templatePath('api/.env'),
-      this.destinationPath('api/.env'),
-    )
+    this.fs.copy(this.templatePath('api/.env'), this.destinationPath('.env'))
     this.fs.copy(
       this.templatePath('api/package.json'),
-      this.destinationPath('api/package.json'),
+      this.destinationPath('package.json'),
     )
+
+    const packageJsonContent = {
+      name: projectName,
+      dependencies: {},
+    }
+
+    switch (databaseName) {
+      case 'mysql':
+        packageJsonContent.dependencies.mysql2 = '^3.9.3'
+        break
+      case 'mariadb':
+        packageJsonContent.dependencies.mariadb = '^3.3.0'
+        break
+      case 'postgresql':
+        packageJsonContent.dependencies.pg = '^8.3.3'
+        packageJsonContent.dependencies['pg-hstore'] = '^2.3.3'
+        break
+    }
+
+    this.packageJson.merge(packageJsonContent)
   }
 
   #runGoodBye() {

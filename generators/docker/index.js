@@ -96,12 +96,14 @@ export default class GeneratorDocker extends Generator {
   }
 
   writing() {
+    this.env.cwd = this.destinationPath('api')
+
     if (this.#answers.useDocker) {
       const { nodeVersion, projectFolderName } = this.#answers
 
       this.fs.copyTpl(
         this.templatePath('api/Dockerfile'),
-        this.destinationPath('api/Dockerfile'),
+        this.destinationPath('Dockerfile'),
         {
           nodeVersion,
           projectFolderName,
@@ -109,15 +111,15 @@ export default class GeneratorDocker extends Generator {
       )
       this.fs.copy(
         this.templatePath('api/docker-entrypoint.sh'),
-        this.destinationPath('api/docker-entrypoint.sh'),
+        this.destinationPath('docker-entrypoint.sh'),
       )
       this.fs.copy(
         this.templatePath('api/wait-for-it.sh'),
-        this.destinationPath('api/wait-for-it.sh'),
+        this.destinationPath('wait-for-it.sh'),
       )
       this.fs.copy(
         this.templatePath('api/.dockerignore'),
-        this.destinationPath('api/.dockerignore'),
+        this.destinationPath('.dockerignore'),
       )
     }
   }

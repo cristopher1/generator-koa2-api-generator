@@ -1,19 +1,21 @@
 {
-  "name": "tu_restaurant",
-  "version": "1.0.0",
+  "name": "",
+  "version": "0.1.0",
   "main": "index.js",
   "type": "module",
-  "license": "MIT",
   "scripts": {
     "init:husky": "husky install",
     "init": "npm run init:husky",
     "dev": "nodemon -r dotenv/config src/server.js",
-    "start": "node -r dotenv/config src/server.js",
-    "lint": "eslint ./src index.js",
-    "lint-fix": "eslint --fix ./src index.js",
+    "start": "node src/server.js",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "lint": "eslint -c .eslintrc.yml --no-eslintrc --ext .js,.mjs .",
+    "lint-fix": "npm run lint -- --fix",
+    "test": "echo 'Not implemented'; exit -1",
     "lint-staged": "npx lint-staged",
-    "test": "jest",
-    "commitlint": "npx commitlint --edit"
+    "commitlint": "npx commitlint --edit",
+    "quality-check": "npm run format && npm run lint"
   },
 "devDependencies": {
     "@babel/cli": "^7.11.6",
@@ -27,6 +29,7 @@
     "babel-jest": "^26.3.0",
     "babel-plugin-add-module-exports": "^1.0.4",
     "babel-plugin-transform-import-meta": "^2.2.1",
+    "dotenv": "^16.3.1",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-standard": "^17.1.0",
@@ -54,7 +57,6 @@
     "ajv-errors": "^3.0.0",
     "ajv-formats": "^3.0.1",
     "core-js": "^3.36.1",
-    "dotenv": "^16.3.1",
     "globs": "^0.1.4",
     "jsonwebtoken": "^9.0.2",
     "koa": "^2.13.0",
@@ -63,8 +65,6 @@
     "koa-logger": "^3.2.1",
     "koa-override-method": "^1.0.0",
     "koa-router": "^12.0.1",
-    "pg": "^8.3.3",
-    "pg-hstore": "^2.3.3",
     "sequelize": "^6.37.1"
   }
 }
