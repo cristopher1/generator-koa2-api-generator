@@ -12,7 +12,7 @@
     "format:fix": "prettier --write .",
     "lint": "eslint -c .eslintrc.yml --no-eslintrc --ext .js,.mjs .",
     "lint-fix": "npm run lint -- --fix",
-    "test": "echo 'Not implemented'; exit -1",
+    "test": "echo The test is not implemented && exit -1",
     "lint-staged": "npx lint-staged",
     "commitlint": "npx commitlint --edit",
     "quality-check": "npm run format && npm run lint"
