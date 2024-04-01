@@ -14,6 +14,7 @@ const router = new Router()
  * @responseComponent {Created} 201
  * @response 400 - Bad request
  * @responseExample {NewUserBadRequestDetectedByJsonSchema} 400.application/json.NewUserBadRequestDetectedByJsonSchema
+ * @responseExample {NewUserBadRequestDetectedBySequelizeValidation} 400.application/json.NewUserBadRequestDetectedBySequelizeValidation
  * @response 500 - Internal Server Error
  * @responseComponent {InternalServerError} 500
  */

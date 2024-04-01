@@ -55,6 +55,7 @@ router.get('/:userEmail', async (ctx) => {
  * @responseComponent {Ok} 200
  * @response 400 - Bad request
  * @responseExample {UpdatedUserBadRequestDetectedByJsonSchema} 400.application/json.UpdatedUserBadRequestDetectedByJsonSchema
+ * @responseExample {UpdatedUserBadRequestDetectedBySequelizeValidation} 400.application/json.UpdatedUserBadRequestDetectedBySequelizeValidation
  * @response 401 - Unauthorized
  * @responseComponent {Unauthorized} 401
  * @response 500 - Internal Server Error
