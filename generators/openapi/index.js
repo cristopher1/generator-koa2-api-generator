@@ -16,6 +16,8 @@ export default class GeneratorOpenApi extends Generator {
 
     this.env.cwd = this.destinationPath('api')
 
+    this.destinationRoot(this.env.cwd)
+
     this.fs.copy(this.templatePath('api/src'), this.destinationPath('src'))
     this.fs.copyTpl(
       this.templatePath('api/api-specification.yml'),

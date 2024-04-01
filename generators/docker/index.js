@@ -98,6 +98,8 @@ export default class GeneratorDocker extends Generator {
   writing() {
     this.env.cwd = this.destinationPath('api')
 
+    this.destinationRoot(this.env.cwd)
+
     if (this.#answers.useDocker) {
       const { nodeVersion, projectFolderName } = this.#answers
 
