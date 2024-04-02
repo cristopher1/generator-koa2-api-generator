@@ -10,11 +10,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 describe('generator-koa2-api-generator:app', () => {
   describe('create a project', () => {
     const projectName = 0
+    const databaseName = 1
     const args = []
     const answers = {}
 
     beforeAll(async () => {
       args[projectName] = faker.string.sample()
+      args[databaseName] = 'Do not select any'
 
       /**
        * Add options to withAnswers, for example: Use a callback function to
