@@ -134,6 +134,10 @@ export default class GeneratorDockerCompose extends Generator {
       const { dbPort, dbDialect } = this.#apiEnvironmentVariables
       const { image, volumenMapped, volumen } = this.#databaseService
 
+      this.fs.copy(
+        this.templatePath('database/.dockerignore'),
+        this.destinationPath('database/.dockerignore'),
+      )
       this.fs.copyTpl(
         this.templatePath('databases/.env'),
         this.destinationPath('database/.env'),
