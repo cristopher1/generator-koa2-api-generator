@@ -139,21 +139,21 @@ export default class GeneratorDockerCompose extends Generator {
         this.destinationPath('database/.dockerignore'),
       )
       this.fs.copyTpl(
-        this.templatePath('databases/.env'),
+        this.templatePath('database/.env'),
         this.destinationPath('database/.env'),
         {
           environmentVariables: databaseEnvironmentVariables,
         },
       )
       this.fs.copyTpl(
-        this.templatePath('databases/.env.example'),
+        this.templatePath('database/.env.example'),
         this.destinationPath('database/.env.example'),
         {
           environmentVariables: databaseEnvironmentVariables,
         },
       )
       this.fs.copyTpl(
-        this.templatePath('databases/Dockerfile'),
+        this.templatePath('database/Dockerfile'),
         this.destinationPath('database/Dockerfile'),
         {
           databaseImage: image,
