@@ -2,6 +2,9 @@ import Generator from 'yeoman-generator'
 
 export default class GeneratorDockerCompose extends Generator {
   #answers
+  #databaseService = {}
+  #apiEnvironmentVariables = {}
+  #databaseEnvironmentVariables = ''
 
   constructor(args, opts) {
     super(args, opts)
@@ -74,42 +77,99 @@ export default class GeneratorDockerCompose extends Generator {
     }
   }
 
-  writing() {
+  configuring() {
     const { useDockerCompose, databaseName } = this.#answers
 
-    if (useDockerCompose && databaseName) {
-      this.fs.copy(
-        this.templatePath(`databases/${databaseName}/database`),
-        this.destinationPath('database'),
-      )
-      this.fs.copy(
-        this.templatePath(`databases/${databaseName}/database/.env`),
-        this.destinationPath('database/.env'),
-      )
-      this.fs.copy(
-        this.templatePath(`databases/${databaseName}/docker-compose.yml`),
-        this.destinationPath('docker-compose.yml'),
-      )
-
-      let dbPort
-      let dbDialect
-
+    if (useDockerCompose) {
       switch (databaseName) {
         case 'mysql':
-          dbPort = 3306
-          dbDialect = 'mysql'
+          this.#databaseService = {
+            image: 'mysql',
+            volumenMapped: '\n      - mysql_data:/var/lib/mysql',
+            volumen: '\n  mysql_data:',
+          }
+          this.#apiEnvironmentVariables = {
+            dbPort: 3306,
+            dbDialect: 'mysql',
+          }
+          this.#databaseEnvironmentVariables =
+            'MYSQL_ROOT_PASSWORD=admin\nMYSQL_USER=admin\nMYSQL_PASSWORD=admin\n MYSQL_DATABASE=api\n'
           break
         case 'mariadb':
-          dbPort = 3306
-          dbDialect = 'mariadb'
+          this.#databaseService = {
+            image: 'mariadb',
+            volumenMapped:
+              '\n      - maria_db_data:/var/lib/mysql\n      - maria_db_backup:/backup',
+            volumen: '\n  maria_db_data:\n  maria_db_backup:',
+          }
+          this.#apiEnvironmentVariables = {
+            dbPort: 3306,
+            dbDialect: 'mariadb',
+          }
+          this.#databaseEnvironmentVariables =
+            'MARIADB_ROOT_PASSWORD=admin\nMARIADB_USER=admin\nMARIADB_PASSWORD=admin\nMARIADB_DATABASE=api\n'
           break
         default:
-          dbPort = 5432
-          dbDialect = 'postgres'
+          this.#databaseService = {
+            image: 'postgres',
+            volumenMapped: '\n      - pg_data:/var/lib/postgresql/data',
+            volumen: '\n  pg_data:',
+          }
+          this.#apiEnvironmentVariables = {
+            dbPort: 5432,
+            dbDialect: 'postgres',
+          }
+          this.#databaseEnvironmentVariables =
+            'POSTGRES_USER=admin\nPOSTGRES_PASSWORD=admin\nPOSTGRES_DB=api\n'
           break
       }
+    }
+  }
 
-      const databaseEnvVariables = [
+  writing() {
+    const { useDockerCompose } = this.#answers
+
+    if (useDockerCompose) {
+      const databaseEnvironmentVariables = this.#databaseEnvironmentVariables
+      const { dbPort, dbDialect } = this.#apiEnvironmentVariables
+      const { image, volumenMapped, volumen } = this.#databaseService
+
+      this.fs.copyTpl(
+        this.templatePath('databases/.env'),
+        this.destinationPath('database/.env'),
+        {
+          environmentVariables: databaseEnvironmentVariables,
+        },
+      )
+      this.fs.copyTpl(
+        this.templatePath('databases/.env.example'),
+        this.destinationPath('database/.env.example'),
+        {
+          environmentVariables: databaseEnvironmentVariables,
+        },
+      )
+      this.fs.copyTpl(
+        this.templatePath('databases/Dockerfile'),
+        this.destinationPath('database/Dockerfile'),
+        {
+          databaseImage: image,
+        },
+      )
+      this.fs.copy(this.templatePath('.env'), this.destinationPath('.env'))
+      this.fs.copy(
+        this.templatePath('.env.example'),
+        this.destinationPath('.env.example'),
+      )
+      this.fs.copyTpl(
+        this.templatePath(`docker-compose.yml`),
+        this.destinationPath('docker-compose.yml'),
+        {
+          databaseVolumenMapped: volumenMapped,
+          databaseVolumen: volumen,
+        },
+      )
+
+      const databaseEnvVariablesForApi = [
         {
           name: 'DB_USERNAME',
           value: 'admin',
@@ -138,9 +198,9 @@ export default class GeneratorDockerCompose extends Generator {
 
       let envFile = this.fs.read(this.destinationPath('api/.env'))
 
-      for (const databaseEnvVariable of databaseEnvVariables) {
-        const name = databaseEnvVariable.name
-        const value = databaseEnvVariable.value
+      for (const databaseEnvVariableForApi of databaseEnvVariablesForApi) {
+        const name = databaseEnvVariableForApi.name
+        const value = databaseEnvVariableForApi.value
 
         envFile = envFile.replace(`${name}=`, `${name}=${value}`)
       }
