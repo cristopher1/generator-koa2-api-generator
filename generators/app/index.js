@@ -173,6 +173,13 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
       this.templatePath('api/package.json'),
       this.destinationPath('package.json'),
     )
+    this.fs.copyTpl(
+      this.templatePath('api/README.md'),
+      this.destinationPath('README.md'),
+      {
+        projectName,
+      },
+    )
 
     const packageJsonContent = {
       name: projectName,
