@@ -15,7 +15,7 @@ describe('generator-koa2-api-generator:docker', () => {
     'api/wait-for-it.sh',
   ]
 
-  describe('create a new project with node 16', () => {
+  describe('add docker support for node 16', () => {
     const answers = {}
 
     beforeAll(async () => {
@@ -74,7 +74,7 @@ describe('generator-koa2-api-generator:docker', () => {
     })
   })
 
-  describe('create a new project with node 18', () => {
+  describe('add docker support for node 18', () => {
     const answers = {}
 
     beforeAll(async () => {
@@ -126,7 +126,7 @@ describe('generator-koa2-api-generator:docker', () => {
     })
   })
 
-  describe('create a new project with node 20', () => {
+  describe('add docker support for node 20', () => {
     const answers = {}
 
     beforeAll(async () => {
@@ -185,7 +185,7 @@ describe('generator-koa2-api-generator:docker', () => {
     })
   })
 
-  describe('create a new project with node 21', () => {
+  describe('add docker support for node 21', () => {
     const answers = {}
 
     beforeAll(async () => {
