@@ -93,7 +93,7 @@ export default class GeneratorDockerCompose extends Generator {
             dbDialect: 'mysql',
           }
           this.#databaseEnvironmentVariables =
-            'MYSQL_ROOT_PASSWORD=admin\nMYSQL_USER=admin\nMYSQL_PASSWORD=admin\n MYSQL_DATABASE=api\n'
+            'MYSQL_ROOT_PASSWORD=admin\nMYSQL_USER=admin\nMYSQL_PASSWORD=admin\nMYSQL_DATABASE=api\n'
           break
         case 'mariadb':
           this.#databaseService = {
