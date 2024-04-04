@@ -73,87 +73,87 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
     }
   }
 
-  #addGit() {
+  async #addGit() {
     const generator = this.#generatorProvider.getGitGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator)
   }
 
-  #addEslint() {
+  async #addEslint() {
     const generator = this.#generatorProvider.getEslintGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator)
   }
 
-  #addHusky() {
+  async #addHusky() {
     const generator = this.#generatorProvider.getHuskyGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator)
   }
 
-  #addLintStaged() {
+  async #addLintStaged() {
     const generator = this.#generatorProvider.getLintStagedGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator)
   }
 
-  #addPrettier() {
+  async #addPrettier() {
     const generator = this.#generatorProvider.getPrettierGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator)
   }
 
-  #addBabel() {
+  async #addBabel() {
     const generator = this.#generatorProvider.getBabelGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator)
   }
 
-  #addCommitLint() {
+  async #addCommitLint() {
     const generator = this.#generatorProvider.getCommitLintGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator)
   }
 
-  #addDocker() {
+  async #addDocker() {
     const generator = this.#generatorProvider.getDockerGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator)
   }
 
-  #addDockerCompose() {
+  async #addDockerCompose() {
     const generator = this.#generatorProvider.getDockerComposeGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator)
   }
 
-  #addJsonSchemas() {
+  async #addJsonSchemas() {
     const generator = this.#generatorProvider.getJsonSchemasGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator)
   }
 
-  #addOpenApi(args) {
+  async #addOpenApi(args) {
     const generator = this.#generatorProvider.getOpenApiGenerator()
-    this.composeWith(generator, args)
+    await this.composeWith(generator, args)
   }
 
-  #addSwagger() {
+  async #addSwagger() {
     const generator = this.#generatorProvider.getSwaggerGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator)
   }
 
-  #addSequelize() {
+  async #addSequelize() {
     const generator = this.#generatorProvider.getSequelizeGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator)
   }
 
-  configuring() {
+  async configuring() {
     const { projectName } = this.#answers
 
-    this.#addGit()
-    this.#addEslint()
-    this.#addHusky()
-    this.#addLintStaged()
-    this.#addPrettier()
-    this.#addBabel()
-    this.#addCommitLint()
-    this.#addSequelize()
-    this.#addOpenApi([projectName])
-    this.#addSwagger()
-    this.#addDocker()
-    this.#addDockerCompose()
-    this.#addJsonSchemas()
+    await this.#addGit()
+    await this.#addEslint()
+    await this.#addHusky()
+    await this.#addLintStaged()
+    await this.#addPrettier()
+    await this.#addBabel()
+    await this.#addCommitLint()
+    await this.#addSequelize()
+    await this.#addOpenApi([projectName])
+    await this.#addSwagger()
+    await this.#addDocker()
+    await this.#addDockerCompose()
+    await this.#addJsonSchemas()
   }
 
   writing() {
