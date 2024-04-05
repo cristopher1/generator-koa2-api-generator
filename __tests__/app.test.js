@@ -60,6 +60,7 @@ describe('generator-koa2-api-generator:app', () => {
       const answers = {}
       answers.useDockerCompose = true
       answers.databaseName = 'database is not supported'
+      answers.runPackageScripts = false
 
       const expected = Error
 
@@ -86,6 +87,7 @@ describe('generator-koa2-api-generator:app', () => {
       args[projectName] = faker.string.sample()
 
       answers.databaseName = null
+      answers.runPackageScripts = false
       answers.useDocker = false
       answers.useDockerCompose = false
 
@@ -209,6 +211,7 @@ describe('generator-koa2-api-generator:app', () => {
       args[projectName] = faker.string.sample()
 
       answers.databaseName = 'postgresql'
+      answers.runPackageScripts = false
       answers.useDocker = false
       answers.useDockerCompose = false
 
@@ -334,6 +337,7 @@ describe('generator-koa2-api-generator:app', () => {
       args[projectName] = faker.string.sample()
 
       answers.databaseName = 'mysql'
+      answers.runPackageScripts = false
       answers.useDocker = false
       answers.useDockerCompose = false
 
@@ -458,6 +462,7 @@ describe('generator-koa2-api-generator:app', () => {
       args[projectName] = faker.string.sample()
 
       answers.databaseName = 'mariadb'
+      answers.runPackageScripts = false
       answers.useDocker = false
       answers.useDockerCompose = false
 
