@@ -22,6 +22,14 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
       description: 'Select a database driver.',
       required: false,
     })
+
+    this.option('runPackageScripts', {
+      type: Boolean,
+      description:
+        'Do you want to automatically run the scripts that configure the project, then installing the dependencies?',
+      default: false,
+      required: false,
+    })
   }
 
   initializing() {
@@ -64,6 +72,22 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
           },
         ],
       },
+      {
+        type: 'list',
+        name: 'runPackageScripts',
+        message: `Do you want to automatically run the scripts that configure the package, then installing the dependencies?`,
+        choices: [
+          {
+            name: 'yes',
+            value: true,
+          },
+          {
+            name: 'no',
+            value: false,
+          },
+        ],
+        when: () => !this.options.runPackageScripts,
+      },
     ]
 
     const answers = await this.prompt(prompts)
@@ -73,6 +97,8 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
     this.#answers = {
       projectName: this.options.projectName,
       databaseName: DataProcessor.filterDatabaseName(databaseName),
+      runPackageScripts:
+        this.options.runPackageScripts || answers.runPackageScripts || false,
     }
   }
 
@@ -205,6 +231,32 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
     this.packageJson.merge(packageJsonContent)
   }
 
+  #getDependencyManager(dependencyManagers) {
+    for (const dependencyManager of dependencyManagers) {
+      this.log(`Find ${dependencyManager}`)
+      const isAvailable = this.#dependencyManagerAvailable(dependencyManager)
+      if (isAvailable) {
+        return dependencyManager
+      }
+    }
+  }
+
+  #dependencyManagerAvailable(name) {
+    try {
+      this.spawnSync(`${name}`, ['--version'])
+      return true
+    } catch (err) {
+      return false
+    }
+  }
+
+  #runPackageScripts(dependencyManager) {
+    console.log('\n********** Run scripts from package.json **********')
+    const scriptArguments = [['init'], ['format:fix']]
+    for (const args of scriptArguments)
+      this.spawnSync(`${dependencyManager}`, ['run', ...args])
+  }
+
   #runGoodBye() {
     this.log('\n')
     this.log('****************************************************')
@@ -220,6 +272,16 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
   }
 
   end() {
+    const dependencyManagers = ['yarn', 'npm']
+    const { runPackageScripts } = this.#answers
+
+    if (runPackageScripts) {
+      const dependencyManager = this.#getDependencyManager(dependencyManagers)
+      this.log(`using ${dependencyManager}`)
+
+      this.#runPackageScripts(dependencyManager)
+    }
+
     this.#runGoodBye()
   }
 }
