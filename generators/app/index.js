@@ -17,9 +17,17 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
       required: true,
     })
 
-    this.argument('databaseName', {
+    this.argument('databaseDriver', {
       type: String,
       description: 'Select a database driver.',
+      required: false,
+    })
+
+    this.option('runGitInit', {
+      type: Boolean,
+      description:
+        'Do you want to run git init automatically, then installing the dependencies?',
+      default: false,
       required: false,
     })
 
@@ -28,6 +36,39 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
       description:
         'Do you want to automatically run the scripts that configure the project, then installing the dependencies?',
       default: false,
+      required: false,
+    })
+
+    this.option('useDocker', {
+      type: Boolean,
+      description:
+        'Add docker support using DockerFile, .dockerignore and others',
+      required: false,
+    })
+
+    this.option('nodeVersion', {
+      type: Number,
+      description:
+        'Node version used in DockerFile. (FROM nodeVersion). Recommended to use node 16, 18, 20 or 21',
+      required: false,
+    })
+
+    this.option('projectFolderName', {
+      type: String,
+      description:
+        'Project folder name used in DockerFile. (WORKDIR /usr/src/projectFolderName)',
+      required: false,
+    })
+
+    this.option('useDockerCompose', {
+      type: Boolean,
+      description: 'Add Docker Compose support.',
+      required: false,
+    })
+
+    this.option('databaseName', {
+      type: String,
+      description: 'Select the database to which the application will connect.',
       required: false,
     })
   }
@@ -49,9 +90,9 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
     const prompts = [
       {
         type: 'list',
-        name: 'databaseName',
+        name: 'databaseDriver',
         message: 'Select a database driver',
-        when: () => !this.options.databaseName,
+        when: () => !this.options.databaseDriver,
         default: 'postgresql',
         choices: [
           {
@@ -74,6 +115,23 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
       },
       {
         type: 'list',
+        name: 'runGitInit',
+        message:
+          'Do you want to run git init automatically, then installing the dependencies?',
+        choices: [
+          {
+            name: 'yes',
+            value: true,
+          },
+          {
+            name: 'no',
+            value: false,
+          },
+        ],
+        when: () => !this.options.runGitInit,
+      },
+      {
+        type: 'list',
         name: 'runPackageScripts',
         message: `Do you want to automatically run the scripts that configure the package, then installing the dependencies?`,
         choices: [
@@ -92,13 +150,19 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
 
     const answers = await this.prompt(prompts)
 
-    const databaseName = this.options.databaseName || answers.databaseName
+    const databaseDriver = this.options.databaseDriver || answers.databaseDriver
 
     this.#answers = {
       projectName: this.options.projectName,
-      databaseName: DataProcessor.filterDatabaseName(databaseName),
+      databaseDriver: DataProcessor.filterDatabaseName(databaseDriver),
+      runGitInit: this.options.runGitInit || answers.runGitInit || false,
       runPackageScripts:
         this.options.runPackageScripts || answers.runPackageScripts || false,
+      useDocker: this.options.useDocker,
+      nodeVersion: this.options.nodeVersion,
+      projectFolderName: this.options.projectFolderName,
+      useDockerCompose: this.options.useDockerCompose,
+      databaseName: this.options.databaseName,
     }
   }
 
@@ -137,14 +201,14 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
     await this.composeWith(generator)
   }
 
-  async #addDocker() {
+  async #addDocker(options) {
     const generator = this.#generatorProvider.getDockerGenerator()
-    await this.composeWith(generator)
+    await this.composeWith(generator, options)
   }
 
-  async #addDockerCompose() {
+  async #addDockerCompose(options) {
     const generator = this.#generatorProvider.getDockerComposeGenerator()
-    await this.composeWith(generator)
+    await this.composeWith(generator, options)
   }
 
   async #addJsonSchemas() {
@@ -169,6 +233,8 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
 
   async configuring() {
     const { projectName } = this.#answers
+    const { useDocker, nodeVersion, projectFolderName } = this.#answers
+    const { useDockerCompose, databaseName } = this.#answers
 
     await this.#addGit()
     await this.#addEslint()
@@ -180,13 +246,20 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
     await this.#addSequelize()
     await this.#addOpenApi([projectName])
     await this.#addSwagger()
-    await this.#addDocker()
-    await this.#addDockerCompose()
+    await this.#addDocker({
+      useDocker,
+      nodeVersion,
+      projectFolderName,
+    })
+    await this.#addDockerCompose({
+      useDockerCompose,
+      databaseName,
+    })
     await this.#addJsonSchemas()
   }
 
   writing() {
-    const { projectName, databaseName } = this.#answers
+    const { projectName, databaseDriver } = this.#answers
 
     this.env.cwd = this.destinationPath('api')
 
@@ -215,7 +288,7 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
       dependencies: {},
     }
 
-    switch (databaseName) {
+    switch (databaseDriver) {
       case 'mysql':
         packageJsonContent.dependencies.mysql2 = '^3.9.3'
         break
@@ -229,6 +302,11 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
     }
 
     this.packageJson.merge(packageJsonContent)
+  }
+
+  #runGitInit() {
+    console.log('\n********** Run git init command **********\n')
+    this.spawnSync('git', ['init'])
   }
 
   #getDependencyManager(dependencyManagers) {
@@ -273,7 +351,11 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
 
   end() {
     const dependencyManagers = ['yarn', 'npm']
-    const { runPackageScripts } = this.#answers
+    const { runGitInit, runPackageScripts } = this.#answers
+
+    if (runGitInit) {
+      this.#runGitInit()
+    }
 
     if (runPackageScripts) {
       const dependencyManager = this.#getDependencyManager(dependencyManagers)
