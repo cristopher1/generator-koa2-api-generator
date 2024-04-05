@@ -17,10 +17,10 @@ Yeoman generator that creates a base structure to create APIs in koa2 with seque
   - Delete the api/src/config/openapi.js file.
   - Delete the api/src/routes/swagger folder.
   - In the api/src/routes/index.js file, delete:
-    ```node    
-      if (environment !== 'production') {
-       router.use('/docs', swaggerRouter.routes())
-      }
+    ```node
+    if (environment !== 'production') {
+      router.use('/docs', swaggerRouter.routes())
+    }
     ```
   - In terminal use:
     ```sh
@@ -58,5 +58,5 @@ Yeoman generator that creates a base structure to create APIs in koa2 with seque
     ```
   - Delete in files api/src/routes/user/registerRouter.js, api/src/routes/user/router.js and api/src/routes/authentication/tokenRouter.js
     ```node
-      import { simpleJsonSchemaValidation } from '../../schemas/json/index.js'
+    import { simpleJsonSchemaValidation } from '../../schemas/json/index.js'
     ```
