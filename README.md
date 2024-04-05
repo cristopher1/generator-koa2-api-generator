@@ -18,6 +18,8 @@
 
 ### 🏠 [Homepage](https://github.com/cristopher1/generator-koa2-api-generator)
 
+Includes configuration for development environment
+
 Example of a generator created by `generator-koa2-api-generator`:
 
 ![generator-koa2-api-generator-project](https://github.com/cristopher1/generator-koa2-api-generator/assets/21159930/0b1a0512-b342-43da-94ef-9705d329a590)
