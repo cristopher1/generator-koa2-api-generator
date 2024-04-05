@@ -18,6 +18,32 @@ describe('generator-koa2-api-generator:docker-compose', () => {
     'docker-compose.yml',
   ]
 
+  describe('docker compose support for database not supported', () => {
+    it('Should throw an exception when the user selects a database that is not supported', async () => {
+      // Arrange
+      const answers = {}
+      answers.useDockerCompose = true
+      answers.databaseName = 'database is not supported'
+
+      const expected = Error
+
+      const runGenerator = async () => {
+        await helpers
+          .run(path.join(__dirname, '../generators/docker_compose'))
+          .inTmpDir((dir) => {
+            fs.copySync(
+              path.join(__dirname, '../generators/app/templates/api/.env'),
+              path.join(dir, 'api', '.env'),
+            )
+          })
+          .withAnswers(answers)
+      }
+
+      // Assert
+      await expect(runGenerator).rejects.toThrow(expected)
+    })
+  })
+
   describe('add docker compose support for PostgreSQL', () => {
     const answers = {}
 

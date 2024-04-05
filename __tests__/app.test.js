@@ -54,6 +54,26 @@ describe('generator-koa2-api-generator:app', () => {
     'api/README.md',
   ]
 
+  describe('create a new project with a database drivers that is not supported', () => {
+    it('Should throw an exception when the user selects a database that is not supported', async () => {
+      // Arrange
+      const answers = {}
+      answers.useDockerCompose = true
+      answers.databaseName = 'database is not supported'
+
+      const expected = Error
+
+      const runGenerator = async () => {
+        await helpers
+          .run(path.join(__dirname, '../generators/app'))
+          .withAnswers(answers)
+      }
+
+      // Assert
+      await expect(runGenerator).rejects.toThrow(expected)
+    })
+  })
+
   describe('create a new project without database drivers', () => {
     const projectName = 0
     const args = []
