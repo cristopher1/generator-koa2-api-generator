@@ -7,24 +7,23 @@ export default class GeneratorDocker extends Generator {
   constructor(args, opts) {
     super(args, opts)
 
-    this.argument('useDocker', {
+    this.option('useDocker', {
       type: Boolean,
       description:
         'Add docker support using DockerFile, .dockerignore and others',
       required: false,
     })
-    this.argument('nodeVersion', {
+    this.option('nodeVersion', {
       type: Number,
       description:
         'Node version used in DockerFile. (FROM nodeVersion). Recommended to use node 16, 18, 20 or 21',
       required: false,
     })
-    this.argument('projectFolderName', {
+    this.option('projectFolderName', {
       type: String,
       description:
         'Project folder name used in DockerFile. (WORKDIR /usr/src/projectFolderName)',
       required: false,
-      default: null,
     })
   }
 
@@ -75,7 +74,7 @@ export default class GeneratorDocker extends Generator {
       useDocker: this.options.useDocker || answers.useDocker || false,
       nodeVersion: this.options.nodeVersion || answers.nodeVersion || 16,
       projectFolderName:
-        this.options.projectFolderName || answers.projectFolderName,
+        this.options.projectFolderName || answers.projectFolderName || 'api',
     }
   }
 
