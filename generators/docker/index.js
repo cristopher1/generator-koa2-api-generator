@@ -15,7 +15,8 @@ export default class GeneratorDocker extends Generator {
     })
     this.argument('nodeVersion', {
       type: Number,
-      description: 'Node version used in DockerFile. (FROM nodeVersion)',
+      description:
+        'Node version used in DockerFile. (FROM nodeVersion). Recommended to use node 16, 18, 20 or 21',
       required: false,
     })
     this.argument('projectFolderName', {
@@ -47,30 +48,13 @@ export default class GeneratorDocker extends Generator {
         ],
       },
       {
-        type: 'list',
+        type: 'input',
         name: 'nodeVersion',
-        message: 'Select node version to docker image. (FROM nodeVersion)',
+        message:
+          'Select node version to docker image. (FROM nodeVersion). Recommended to use node 16, 18, 20 or 21',
         when: (answers) =>
           (this.options.useDocker || answers.useDocker) &&
           !this.options.nodeVersion,
-        choices: [
-          {
-            name: 'node v16',
-            value: 16,
-          },
-          {
-            name: 'node v18',
-            value: 18,
-          },
-          {
-            name: 'node v20',
-            value: 20,
-          },
-          {
-            name: 'node v21',
-            value: 21,
-          },
-        ],
       },
       {
         type: 'input',
