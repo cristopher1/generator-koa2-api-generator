@@ -5,6 +5,8 @@
 
 > Readme created by generator-koa2-api-generator
 
+See documentation in [generator-koa2-api-generator](https://github.com/cristopher1/generator-koa2-api-generator/tree/main)
+
 ### [Index](#index)
 
 - [Run the API in localhost](#localhost)
