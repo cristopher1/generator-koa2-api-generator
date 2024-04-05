@@ -67,9 +67,20 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
 
     const answers = await this.prompt(prompts)
 
+    const databaseName = this.options.databaseName || answers.databaseName
+    let filteredDatabaseName = null
+
+    if (databaseName) {
+      filteredDatabaseName = ['mysql', 'mariadb', 'postgresql'].includes(
+        databaseName,
+      )
+        ? databaseName
+        : 'postgresql'
+    }
+
     this.#answers = {
       projectName: this.options.projectName,
-      databaseName: this.options.databaseName || answers.databaseName,
+      databaseName: filteredDatabaseName,
     }
   }
 
