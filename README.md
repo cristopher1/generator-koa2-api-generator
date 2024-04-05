@@ -232,5 +232,3 @@ Copyright © 2024 [Cristopher Jiménez Meza](https://github.com/cristopher1).<br
 This project is [MIT](https://github.com/cristopher1/generator-koa2-api-generator/blob/master/LICENSE) licensed.
 
 ---
-
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
