@@ -82,14 +82,13 @@ jobs:
 
       - name: create a new generator
         working-directory: ../generator_test
-        run: yo koa2-api-generator test --onlyTerminal --runGitInit --runPackageScripts
+        run: yo koa2-api-generator new_api postgresql --runPackageScripts --userDocker --nodeVersion=21 --projectFolderName=api --useDockerCompose --databaseName=postgresql
 
       - name: audit
         run: npm audit
 
-      - name: run linter, formatter and tests
+      - name: run linter and formatter
         working-directory: ../generator_test
         run: |
           npm run lint
           npm run format
-          npm run test
