@@ -2,6 +2,7 @@ import Generator from 'yeoman-generator'
 import chalk from 'chalk'
 import yosay from 'yosay'
 import { GeneratorProvider } from './generator_components/GeneratorProvider.js'
+import { DataProcessor } from '../lib/index.js'
 
 export default class GeneratorKoa2ApiGenerator extends Generator {
   #answers
@@ -68,19 +69,10 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
     const answers = await this.prompt(prompts)
 
     const databaseName = this.options.databaseName || answers.databaseName
-    let filteredDatabaseName = null
-
-    if (databaseName) {
-      filteredDatabaseName = ['mysql', 'mariadb', 'postgresql'].includes(
-        databaseName,
-      )
-        ? databaseName
-        : 'postgresql'
-    }
 
     this.#answers = {
       projectName: this.options.projectName,
-      databaseName: filteredDatabaseName,
+      databaseName: DataProcessor.filterDatabaseName(databaseName),
     }
   }
 

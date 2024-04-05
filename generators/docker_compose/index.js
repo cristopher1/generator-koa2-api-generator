@@ -1,4 +1,5 @@
 import Generator from 'yeoman-generator'
+import { DataProcessor } from '../lib/index.js'
 
 export default class GeneratorDockerCompose extends Generator {
   #answers
@@ -70,10 +71,12 @@ export default class GeneratorDockerCompose extends Generator {
 
     const answers = await this.prompt(prompts)
 
+    const databaseName = this.options.databaseName || answers.databaseName
+
     this.#answers = {
       useDockerCompose:
         this.options.useDockerCompose || answers.useDockerCompose,
-      databaseName: this.options.databaseName || answers.databaseName,
+      databaseName: DataProcessor.filterDatabaseName(databaseName),
     }
   }
 
