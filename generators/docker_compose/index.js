@@ -10,12 +10,12 @@ export default class GeneratorDockerCompose extends Generator {
   constructor(args, opts) {
     super(args, opts)
 
-    this.argument('useDockerCompose', {
+    this.option('useDockerCompose', {
       type: Boolean,
       description: 'Add Docker Compose support.',
       required: false,
     })
-    this.argument('databaseName', {
+    this.option('databaseName', {
       type: String,
       description: 'Select the database to which the application will connect.',
       required: false,
