@@ -1,6 +1,6 @@
 <h1 align="center">Welcome to generator-koa2-api-generator 👋</h1>
 <p>
-  <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
+  <img alt="Version" src="https://img.shields.io/badge/version-1.0.1-blue.svg?cacheSeconds=2592000" />
   <a href="https://github.com/cristopher1/generator-koa2-api-generator#readme" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
   </a>
@@ -80,15 +80,15 @@ yo koa2-api-generator koa2_api_project postgresql
 
 The generator-koa2-api-generator include various options, these are:
 
-| option            |  value  |        default        | description                                                                                                | example                                                                      |
-| :---------------- | :-----: | :-------------------: | :--------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------- |
-| runGitInit        | Boolean |         false         | Run git init automatically, then installing the dependencies                                               | `yo koa2-api-generator project_name --runGitInit`                            |
-| runPackageScripts | Boolean |         false         | Run the scripts that configure the package, then installing the dependencies                               | `yo koa2-api-generator project_name --runPackageScripts`                     |
-| useDocker         | Boolean |         false         | Add docker support using DockerFile, .dockerignore and others                                              | `yo koa2-api-generator project_name --useDocker`                             |
-| nodeVersion       | Number  | without default value | Node version used in DockerFile. (FROM nodeVersion). Recommended to use node 16, 18, 20 or 21              | `yo koa2-api-generator project_name --nodeVersion=21`                        |
-| projectFolderName | String  |          api          | Project folder name used in DockerFile. (WORKDIR /usr/src/projectFolderName)                               | `yo koa2-api-generator project_name --projectFolderName=project_folder_name` |
-| useDockerCompose  | String  |         false         | Add Docker Compose support.                                                                                | `yo koa2-api-generator project_name --useDockerCompose`                      |
-| databaseName      | String  |         null          | Select the database to which the application will connect. Accepts the values: postgresql, mysql, mariadb. | `yo koa2-api-generator project_name --databaseName=postgresql`               |
+| option            |  value  | default | description                                                                                                | example                                                                      |
+| :---------------- | :-----: | :-----: | :--------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------- |
+| runGitInit        | Boolean |  false  | Run git init automatically, then installing the dependencies                                               | `yo koa2-api-generator project_name --runGitInit`                            |
+| runPackageScripts | Boolean |  false  | Run the scripts that configure the package, then installing the dependencies                               | `yo koa2-api-generator project_name --runPackageScripts`                     |
+| useDocker         | Boolean |  false  | Add docker support using DockerFile, .dockerignore and others                                              | `yo koa2-api-generator project_name --useDocker`                             |
+| nodeVersion       | Number  |   16    | Node version used in DockerFile. (FROM nodeVersion). Recommended to use node 16, 18, 20 or 21              | `yo koa2-api-generator project_name --nodeVersion=21`                        |
+| projectFolderName | String  |   api   | Project folder name used in DockerFile. (WORKDIR /usr/src/projectFolderName)                               | `yo koa2-api-generator project_name --projectFolderName=project_folder_name` |
+| useDockerCompose  | String  |  false  | Add Docker Compose support.                                                                                | `yo koa2-api-generator project_name --useDockerCompose`                      |
+| databaseName      | String  |  null   | Select the database to which the application will connect. Accepts the values: postgresql, mysql, mariadb. | `yo koa2-api-generator project_name --databaseName=postgresql`               |
 
 ## <a id="structure"></a> Project structure
 

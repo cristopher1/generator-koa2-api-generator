@@ -2,6 +2,11 @@
 
 Yeoman generator that creates a base structure to create APIs in koa2 with sequelize and others tools.
 
+**Feature added in version 1.0.1:**
+
+- Removed @babel/plugin-transform-runtime from api/babel.config.json
+- Adds in documentation default value for nodeVersion in docker generator (node version 16)
+
 **Features added in version 1.0.0:**
 
 - generator-koa2-api-generator only include configurations for development environment.
