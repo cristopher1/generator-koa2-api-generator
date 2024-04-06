@@ -2,7 +2,6 @@ import GeneratorBabel from '../../babel/index.js'
 import GeneratorEslint from '../../eslint/index.js'
 import GeneratorGit from '../../git/index.js'
 import GeneratorHusky from '../../husky/index.js'
-import GeneratorJest from '../../jest/index.js'
 import GeneratorLintStaged from '../../lintstaged/index.js'
 import GeneratorPrettier from '../../prettier/index.js'
 import GeneratorCommitLint from '../../commitlint/index.js'
@@ -11,6 +10,7 @@ import GeneratorSwagger from '../../swagger/index.js'
 import GeneratorSequelize from '../../sequelize/index.js'
 import GeneratorDocker from '../../docker/index.js'
 import GeneratorDockerCompose from '../../docker_compose/index.js'
+import GeneratorJsonSchemas from '../../json_schemas/index.js'
 
 import { createRequire } from 'node:module'
 
@@ -59,13 +59,6 @@ export class GeneratorProvider {
     }
   }
 
-  getJestGenerator() {
-    return {
-      Generator: GeneratorJest,
-      path: require.resolve('../../jest'),
-    }
-  }
-
   getCommitLintGenerator() {
     return {
       Generator: GeneratorCommitLint,
@@ -105,6 +98,13 @@ export class GeneratorProvider {
     return {
       Generator: GeneratorDockerCompose,
       path: require.resolve('../../docker_compose'),
+    }
+  }
+
+  getJsonSchemasGenerator() {
+    return {
+      Generator: GeneratorJsonSchemas,
+      path: require.resolve('../../json_schemas'),
     }
   }
 }

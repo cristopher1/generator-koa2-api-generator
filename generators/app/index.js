@@ -2,8 +2,10 @@ import Generator from 'yeoman-generator'
 import chalk from 'chalk'
 import yosay from 'yosay'
 import { GeneratorProvider } from './generator_components/GeneratorProvider.js'
+import { DataProcessor } from '../lib/index.js'
 
 export default class GeneratorKoa2ApiGenerator extends Generator {
+  #answers
   #generatorProvider
 
   constructor(args, opts) {
@@ -11,15 +13,62 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
 
     this.argument('projectName', {
       type: String,
-      description: 'Name of the generator',
+      description: 'Name of the project',
       required: true,
     })
 
-    this.option('onlyTerminal', {
+    this.argument('databaseDriver', {
+      type: String,
+      description: 'Select a database driver.',
+      required: false,
+    })
+
+    this.option('runGitInit', {
       type: Boolean,
       description:
-        'If this option is used, the yeoman prompts will not be used when there are missing options. For default this option is not used',
+        'Do you want to run git init automatically, then installing the dependencies?',
       default: false,
+      required: false,
+    })
+
+    this.option('runPackageScripts', {
+      type: Boolean,
+      description:
+        'Do you want to automatically run the scripts that configure the project, then installing the dependencies?',
+      default: false,
+      required: false,
+    })
+
+    this.option('useDocker', {
+      type: Boolean,
+      description:
+        'Add docker support using DockerFile, .dockerignore and others',
+      required: false,
+    })
+
+    this.option('nodeVersion', {
+      type: Number,
+      description:
+        'Node version used in DockerFile. (FROM nodeVersion). Recommended to use node 16, 18, 20 or 21',
+      required: false,
+    })
+
+    this.option('projectFolderName', {
+      type: String,
+      description:
+        'Project folder name used in DockerFile. (WORKDIR /usr/src/projectFolderName)',
+      required: false,
+    })
+
+    this.option('useDockerCompose', {
+      type: Boolean,
+      description: 'Add Docker Compose support.',
+      required: false,
+    })
+
+    this.option('databaseName', {
+      type: String,
+      description: 'Select the database to which the application will connect.',
       required: false,
     })
   }
@@ -37,101 +86,253 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
         )} generator!`,
       ),
     )
+
+    const prompts = [
+      {
+        type: 'list',
+        name: 'databaseDriver',
+        message: 'Select a database driver',
+        when: () => !this.options.databaseDriver,
+        default: 'postgresql',
+        choices: [
+          {
+            name: 'MySQL',
+            value: 'mysql',
+          },
+          {
+            name: 'PostgreSQL',
+            value: 'postgresql',
+          },
+          {
+            name: 'MariaDB',
+            value: 'mariadb',
+          },
+          {
+            name: 'Do not select any',
+            value: null,
+          },
+        ],
+      },
+      {
+        type: 'list',
+        name: 'runGitInit',
+        message:
+          'Do you want to run git init automatically, then installing the dependencies?',
+        choices: [
+          {
+            name: 'yes',
+            value: true,
+          },
+          {
+            name: 'no',
+            value: false,
+          },
+        ],
+        when: () => !this.options.runGitInit,
+      },
+      {
+        type: 'list',
+        name: 'runPackageScripts',
+        message: `Do you want to automatically run the scripts that configure the package, then installing the dependencies?`,
+        choices: [
+          {
+            name: 'yes',
+            value: true,
+          },
+          {
+            name: 'no',
+            value: false,
+          },
+        ],
+        when: () => !this.options.runPackageScripts,
+      },
+    ]
+
+    const answers = await this.prompt(prompts)
+
+    const databaseDriver = this.options.databaseDriver || answers.databaseDriver
+
+    this.#answers = {
+      projectName: this.options.projectName,
+      databaseDriver: DataProcessor.filterDatabaseName(databaseDriver),
+      runGitInit: this.options.runGitInit || answers.runGitInit || false,
+      runPackageScripts:
+        this.options.runPackageScripts || answers.runPackageScripts || false,
+      useDocker: this.options.useDocker,
+      nodeVersion: this.options.nodeVersion,
+      projectFolderName: this.options.projectFolderName,
+      useDockerCompose: this.options.useDockerCompose,
+      databaseName: this.options.databaseName,
+    }
   }
 
-  #addGit() {
+  async #addGit() {
     const generator = this.#generatorProvider.getGitGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator)
   }
 
-  #addEslint() {
+  async #addEslint() {
     const generator = this.#generatorProvider.getEslintGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator)
   }
 
-  #addHusky() {
+  async #addHusky() {
     const generator = this.#generatorProvider.getHuskyGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator)
   }
 
-  #addLintStaged() {
+  async #addLintStaged() {
     const generator = this.#generatorProvider.getLintStagedGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator)
   }
 
-  #addPrettier() {
+  async #addPrettier() {
     const generator = this.#generatorProvider.getPrettierGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator)
   }
 
-  #addBabel() {
+  async #addBabel() {
     const generator = this.#generatorProvider.getBabelGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator)
   }
 
-  #addJest(args) {
-    const generator = this.#generatorProvider.getJestGenerator()
-    this.composeWith(generator, args)
-  }
-
-  #addCommitLint() {
+  async #addCommitLint() {
     const generator = this.#generatorProvider.getCommitLintGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator)
   }
 
-  #addDocker() {
+  async #addDocker(options) {
     const generator = this.#generatorProvider.getDockerGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator, options)
   }
 
-  #addDockerCompose() {
+  async #addDockerCompose(options) {
     const generator = this.#generatorProvider.getDockerComposeGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator, options)
   }
 
-  #addJsonSchemas() {}
+  async #addJsonSchemas() {
+    const generator = this.#generatorProvider.getJsonSchemasGenerator()
+    await this.composeWith(generator)
+  }
 
-  #addOpenApi() {
+  async #addOpenApi(args) {
     const generator = this.#generatorProvider.getOpenApiGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator, args)
   }
 
-  #addSwagger() {
+  async #addSwagger() {
     const generator = this.#generatorProvider.getSwaggerGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator)
   }
 
-  #addSequelize() {
+  async #addSequelize() {
     const generator = this.#generatorProvider.getSequelizeGenerator()
-    this.composeWith(generator)
+    await this.composeWith(generator)
   }
 
-  configuring() {
-    this.#addGit()
-    this.#addEslint()
-    this.#addHusky()
-    this.#addLintStaged()
-    this.#addPrettier()
-    this.#addBabel()
-    this.#addJest()
-    this.#addCommitLint()
-    this.#addSequelize()
-    this.#addOpenApi()
-    this.#addSwagger()
-    this.#addDocker()
-    this.#addDockerCompose()
+  async configuring() {
+    const { projectName } = this.#answers
+    const { useDocker, nodeVersion, projectFolderName } = this.#answers
+    const { useDockerCompose, databaseName } = this.#answers
+
+    await this.#addGit()
+    await this.#addEslint()
+    await this.#addHusky()
+    await this.#addLintStaged()
+    await this.#addPrettier()
+    await this.#addBabel()
+    await this.#addCommitLint()
+    await this.#addSequelize()
+    await this.#addOpenApi([projectName])
+    await this.#addSwagger()
+    await this.#addDocker({
+      useDocker,
+      nodeVersion,
+      projectFolderName,
+    })
+    await this.#addDockerCompose({
+      useDockerCompose,
+      databaseName,
+    })
+    await this.#addJsonSchemas()
   }
 
   writing() {
-    this.fs.copy(this.templatePath('api/src'), this.destinationPath('api/src'))
+    const { projectName, databaseDriver } = this.#answers
+
+    this.env.cwd = this.destinationPath('api')
+
+    this.destinationRoot(this.env.cwd)
+
+    this.fs.copy(this.templatePath('api/src'), this.destinationPath('src'))
     this.fs.copy(
       this.templatePath('api/.env.example'),
-      this.destinationPath('api/.env.example'),
+      this.destinationPath('.env.example'),
     )
+    this.fs.copy(this.templatePath('api/.env'), this.destinationPath('.env'))
     this.fs.copy(
       this.templatePath('api/package.json'),
-      this.destinationPath('api/package.json'),
+      this.destinationPath('package.json'),
     )
+    this.fs.copyTpl(
+      this.templatePath('api/README.md'),
+      this.destinationPath('README.md'),
+      {
+        projectName,
+      },
+    )
+
+    const packageJsonContent = {
+      name: projectName,
+      dependencies: {},
+    }
+
+    switch (databaseDriver) {
+      case 'mysql':
+        packageJsonContent.dependencies.mysql2 = '^3.9.3'
+        break
+      case 'mariadb':
+        packageJsonContent.dependencies.mariadb = '^3.3.0'
+        break
+      case 'postgresql':
+        packageJsonContent.dependencies.pg = '^8.3.3'
+        packageJsonContent.dependencies['pg-hstore'] = '^2.3.3'
+        break
+    }
+
+    this.packageJson.merge(packageJsonContent)
+  }
+
+  #runGitInit() {
+    console.log('\n********** Run git init command **********\n')
+    this.spawnSync('git', ['init'])
+  }
+
+  #getDependencyManager(dependencyManagers) {
+    for (const dependencyManager of dependencyManagers) {
+      this.log(`Find ${dependencyManager}`)
+      const isAvailable = this.#dependencyManagerAvailable(dependencyManager)
+      if (isAvailable) {
+        return dependencyManager
+      }
+    }
+  }
+
+  #dependencyManagerAvailable(name) {
+    try {
+      this.spawnSync(`${name}`, ['--version'])
+      return true
+    } catch (err) {
+      return false
+    }
+  }
+
+  #runPackageScripts(dependencyManager) {
+    console.log('\n********** Run scripts from package.json **********')
+    const scriptArguments = [['init'], ['format:fix']]
+    for (const args of scriptArguments)
+      this.spawnSync(`${dependencyManager}`, ['run', ...args])
   }
 
   #runGoodBye() {
@@ -149,6 +350,20 @@ export default class GeneratorKoa2ApiGenerator extends Generator {
   }
 
   end() {
+    const dependencyManagers = ['yarn', 'npm']
+    const { runGitInit, runPackageScripts } = this.#answers
+
+    if (runGitInit) {
+      this.#runGitInit()
+    }
+
+    if (runPackageScripts) {
+      const dependencyManager = this.#getDependencyManager(dependencyManagers)
+      this.log(`using ${dependencyManager}`)
+
+      this.#runPackageScripts(dependencyManager)
+    }
+
     this.#runGoodBye()
   }
 }

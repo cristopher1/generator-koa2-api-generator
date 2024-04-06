@@ -1,23 +1,41 @@
 import Router from 'koa-router'
+import { simpleJsonSchemaValidation } from '../../schemas/json/index.js'
 
 const router = new Router()
 
 /**
  * POST /api/v1/users/register
  *
- * @summary Register a user
- * @bodyContent {Register} application/json
+ * @tag API endpoints
+ * @summary Register an user
+ * @bodyContent {NewUser} application/json
  * @bodyRequired
  * @response 201 - Created
- * @response 401 - The client is not authorized
- * @response 500 - Unexpected error
+ * @responseComponent {Created} 201
+ * @response 400 - Bad request
+ * @responseExample {NewUserBadRequestDetectedByJsonSchema} 400.application/json.NewUserBadRequestDetectedByJsonSchema
+ * @responseExample {NewUserBadRequestDetectedBySequelizeValidation} 400.application/json.NewUserBadRequestDetectedBySequelizeValidation
+ * @response 500 - Internal Server Error
+ * @responseComponent {InternalServerError} 500
  */
-router.post('/', async (ctx) => {
-  const user = { ...ctx.request.body }
+router.post(
+  '/',
+  // Validate the request using JSON Schema
+  async (ctx, next) => {
+    const { body } = ctx.request
 
-  await ctx.orm.models.User.create(user)
+    simpleJsonSchemaValidation('newUser', body)
 
-  ctx.status = 201
-})
+    ctx.state.user = { ...body }
+    await next()
+  },
+  async (ctx) => {
+    const { user } = ctx.state
+
+    await ctx.orm.models.User.create(user)
+
+    ctx.status = 201
+  },
+)
 
 export { router as registerRouter }
