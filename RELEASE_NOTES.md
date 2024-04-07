@@ -2,6 +2,12 @@
 
 Yeoman generator that creates a base structure to create APIs in koa2 with sequelize and others tools.
 
+**Feature added in version 1.0.2:**
+
+- README updated
+- DATABASE_URL added in .env and .env.example
+- Fixed the problem associated with the option "Do not select any" in the question and generator options "Select the database to which the application will connect". Now a docker-compose.yml without database service is created.
+
 **Feature added in version 1.0.1:**
 
 - Removed @babel/plugin-transform-runtime from api/babel.config.json

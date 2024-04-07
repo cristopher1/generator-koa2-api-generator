@@ -45,6 +45,10 @@ Runs the API using the following command
 npm run dev
 ```
 
+**The API documentation is in http://localhost:${PORT}/api/v1/docs**
+
+**See PORT environment variables from .env file**
+
 ### <a id="docker-support"></a> Run the API using Dockerfile created by generator-koa2-api-generator
 
 #### Prerequisites
