@@ -8,11 +8,17 @@ import fs from 'fs-extra'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 describe('generator-koa2-api-generator:docker-compose', () => {
-  const baseStructure = [
+  const baseStructureWithDatabaseService = [
     'database/.dockerignore',
     'database/.env',
     'database/.env.example',
     'database/Dockerfile',
+    '.env',
+    '.env.example',
+    'docker-compose.yml',
+  ]
+
+  const baseStructureWithoutDatabaseService = [
     '.env',
     '.env.example',
     'docker-compose.yml',
@@ -82,7 +88,7 @@ describe('generator-koa2-api-generator:docker-compose', () => {
 
     it('Should create the correct base structure', () => {
       // Assert
-      assert.file(baseStructure)
+      assert.file(baseStructureWithDatabaseService)
     })
 
     describe('database folder', () => {
@@ -180,7 +186,7 @@ describe('generator-koa2-api-generator:docker-compose', () => {
 
     it('Should create the correct base structure', () => {
       // Assert
-      assert.file(baseStructure)
+      assert.file(baseStructureWithDatabaseService)
     })
 
     describe('database folder', () => {
@@ -280,7 +286,7 @@ describe('generator-koa2-api-generator:docker-compose', () => {
 
     it('Should create the correct base structure', () => {
       // Assert
-      assert.file(baseStructure)
+      assert.file(baseStructureWithDatabaseService)
     })
 
     describe('database folder', () => {
@@ -339,6 +345,60 @@ describe('generator-koa2-api-generator:docker-compose', () => {
           ['docker-compose.yml', '- maria_db_backup:/backup'],
           ['docker-compose.yml', 'maria_db_data:'],
           ['docker-compose.yml', 'maria_db_backup:'],
+        ])
+      })
+    })
+  })
+
+  describe('add docker compose support for Do not select any', () => {
+    const answers = {}
+
+    beforeAll(async () => {
+      answers.useDockerCompose = true
+      answers.databaseName = null
+
+      /**
+       * Add options to withAnswers, for example: Use a callback function to
+       * trigger filter functions used in question objects.
+       */
+      const options = {
+        /**
+         * This function is called by withAnswers for each answer.
+         *
+         * @param {any} answer User entered answer.
+         * @param {Object} param
+         * @param {any} param.question The question associated with the answer.
+         * @param {any} param.answers All user entered answers.
+         * @returns
+         */
+        callback: (answer, { question, answers }) =>
+          question.filter ? question.filter(answer) : answer,
+      }
+
+      await helpers
+        .run(path.join(__dirname, '../generators/docker_compose'))
+        .withAnswers(answers, options)
+    })
+
+    it('Should create the correct base structure', () => {
+      // Assert
+      assert.file(baseStructureWithoutDatabaseService)
+    })
+
+    describe('docker-compose.yml', () => {
+      it('Should create a docker-compose.yml with the correct database volumes', () => {
+        // Assert
+        assert.noFileContent([
+          [
+            'docker-compose.yml',
+            `database:
+              build:
+                context: database
+              env_file:
+                - database/.env
+              restart: always`,
+          ],
+          ['docker-compose.yml', 'volumes:'],
         ])
       })
     })
